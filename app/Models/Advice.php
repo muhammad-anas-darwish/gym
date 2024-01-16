@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Advice extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['category_id', 'title'];
 }

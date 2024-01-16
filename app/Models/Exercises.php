@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Exercises extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'description', 'exercise_photo_path'];
 }

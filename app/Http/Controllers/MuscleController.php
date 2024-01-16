@@ -13,15 +13,8 @@ class MuscleController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $muscles = Muscle::all();
+        return response()->json($muscles);
     }
 
     /**
@@ -29,23 +22,14 @@ class MuscleController extends Controller
      */
     public function store(StoreMuscleRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Muscle $muscle)
-    {
-        //
-    }
+        // store
+        Muscle::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Muscle $muscle)
-    {
-        //
+        return response()->json([
+            'message' => 'Muscle added.'
+        ], 201);
     }
 
     /**
@@ -53,7 +37,12 @@ class MuscleController extends Controller
      */
     public function update(UpdateMuscleRequest $request, Muscle $muscle)
     {
-        //
+        $data = $request->validated();
+
+        // update
+        $muscle->update($data);
+
+        return response()->json(['message' => 'Muscle updated.']);
     }
 
     /**
@@ -61,6 +50,9 @@ class MuscleController extends Controller
      */
     public function destroy(Muscle $muscle)
     {
-        //
+        // delete
+        $muscle->delete();
+
+        return response()->json(['message' => 'Records deleted'], 204);
     }
 }

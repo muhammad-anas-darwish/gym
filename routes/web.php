@@ -33,3 +33,8 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+// TODO temp page
+Route::get('/create', function() {
+    return view('create.create');
+});

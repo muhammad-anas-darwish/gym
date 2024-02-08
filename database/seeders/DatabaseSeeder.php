@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Exercise;
 use App\Models\Food;
 use App\Models\Muscle;
+use App\Models\Package;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -27,6 +28,8 @@ class DatabaseSeeder extends Seeder
         Food::factory(16)->create();
 
         Category::factory(16)->create();
+
+        Package::factory(3)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

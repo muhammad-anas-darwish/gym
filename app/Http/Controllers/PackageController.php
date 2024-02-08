@@ -13,15 +13,9 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $package = Package::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($package);
     }
 
     /**
@@ -29,7 +23,12 @@ class PackageController extends Controller
      */
     public function store(StorePackageRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        // store
+        Package::create($data);
+
+        return response()->json(['message' => 'Package added.'], 201);
     }
 
     /**
@@ -37,15 +36,7 @@ class PackageController extends Controller
      */
     public function show(Package $package)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Package $package)
-    {
-        //
+        return response()->json($package);
     }
 
     /**
@@ -53,7 +44,13 @@ class PackageController extends Controller
      */
     public function update(UpdatePackageRequest $request, Package $package)
     {
-        //
+        $data = $request->validated();
+
+        // update
+        $package->update($data);
+
+        // redirect
+        return response()->json(['message' => 'package updated.']);
     }
 
     /**
@@ -61,6 +58,9 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        //
+        // delete
+        $package->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

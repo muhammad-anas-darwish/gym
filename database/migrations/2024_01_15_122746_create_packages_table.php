@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->smallInteger('limit');
-            $table->integer('price');
+            $table->smallInteger('limit'); // limit days
+            $table->double('price');
             $table->timestamps();
         });
     }

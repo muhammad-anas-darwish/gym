@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MuscleController;
+use App\Http\Controllers\PackageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,4 @@ Route::apiResource('muscles', MuscleController::class)->only(['index', 'store', 
 Route::apiResource('exercises', ExerciseController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::apiResource('foods', FoodController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::apiResource('packages', PackageController::class)->only(['index', 'store', 'show','update', 'destroy']);

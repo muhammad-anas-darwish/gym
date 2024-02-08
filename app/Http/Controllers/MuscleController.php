@@ -27,9 +27,7 @@ class MuscleController extends Controller
         // store
         Muscle::create($data);
 
-        return response()->json([
-            'message' => 'Muscle added.'
-        ], 201);
+        return response()->json(['message' => 'Muscle added.'], 201);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Exercise;
 use App\Models\Muscle;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         Muscle::factory(10)->create();
 
+        Exercise::factory(16)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

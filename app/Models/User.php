@@ -31,6 +31,7 @@ class User extends Authenticatable
         'birth_date',
         'gender',
         'is_admin',
+        'is_coach',
     ];
 
     /**

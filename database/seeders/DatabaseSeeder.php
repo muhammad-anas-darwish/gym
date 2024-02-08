@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Category;
+use App\Models\Chat;
 use App\Models\Exercise;
 use App\Models\Food;
 use App\Models\Muscle;
@@ -30,6 +31,8 @@ class DatabaseSeeder extends Seeder
         Category::factory(16)->create();
 
         Package::factory(3)->create();
+
+        Chat::factory(6)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

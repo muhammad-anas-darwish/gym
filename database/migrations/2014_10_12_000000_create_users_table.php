@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->date('birth_date');
             $table->string('gender');
-            $table->boolean('is_admin');
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_coach')->default(false);
             $table->timestamps();
         });
     }

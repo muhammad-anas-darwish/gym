@@ -13,15 +13,9 @@ class ChatController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $chats = Chat::select(['title', 'chat_photo_path'])->paginate(20);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($chats);
     }
 
     /**
@@ -29,7 +23,13 @@ class ChatController extends Controller
      */
     public function store(StoreChatRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['is_private'] = true;
+
+        // store
+        Chat::create($data);
+
+        return response()->json(['message' => 'Chat added.'], 201);
     }
 
     /**
@@ -37,15 +37,7 @@ class ChatController extends Controller
      */
     public function show(Chat $chat)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Chat $chat)
-    {
-        //
+        return response()->json($chat);
     }
 
     /**
@@ -53,7 +45,13 @@ class ChatController extends Controller
      */
     public function update(UpdateChatRequest $request, Chat $chat)
     {
-        //
+        $data = $request->validated();
+
+        // update
+        if(!$chat['is_private'])
+            $chat->update($data);
+
+        return response()->json('Chat updated.');
     }
 
     /**
@@ -61,6 +59,10 @@ class ChatController extends Controller
      */
     public function destroy(Chat $chat)
     {
-        //
+        // delete
+        if(!$chat['is_private'])
+            $chat->delete();
+
+        return response()->json('Records deleted.');
     }
 }

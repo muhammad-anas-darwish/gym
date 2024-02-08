@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MuscleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('muscles', MuscleController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::apiResource('exercises', ExerciseController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::apiResource('foods', FoodController::class)->only(['index', 'show', 'store', 'update', 'destroy']);

@@ -13,15 +13,8 @@ class FoodController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $foods = Food::all();
+        return response()->json($foods);
     }
 
     /**
@@ -29,7 +22,12 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        // store
+        Food::create($data);
+
+        return response()->json(['message', 'Food added.'], 201);
     }
 
     /**
@@ -37,15 +35,7 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Food $food)
-    {
-        //
+        return response()->json($food);
     }
 
     /**
@@ -53,7 +43,11 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Food $food)
     {
-        //
+        $data = $request->validated();
+
+        $food->update($data);
+
+        return response()->json(['message' => 'Food updated.']);
     }
 
     /**
@@ -61,6 +55,9 @@ class FoodController extends Controller
      */
     public function destroy(Food $food)
     {
-        //
+        // delete
+        $food->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

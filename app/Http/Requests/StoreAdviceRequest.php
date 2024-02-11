@@ -11,7 +11,7 @@ class StoreAdviceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class StoreAdviceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:128'],
+            'category_id' => ['required', 'exists:categories,id'],
         ];
     }
 }

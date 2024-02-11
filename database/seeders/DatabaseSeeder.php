@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Advice;
 use App\Models\Category;
 use App\Models\Chat;
 use App\Models\Exercise;
@@ -36,6 +37,8 @@ class DatabaseSeeder extends Seeder
         Chat::factory(6)->create();
 
         MuscleExercise::factory(6)->create();
+
+        Advice::factory(40)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

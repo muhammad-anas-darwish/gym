@@ -13,23 +13,22 @@ class AdviceController extends Controller
      */
     public function index()
     {
-        //
+        $advices = Advice::paginate(20);
+
+        return response()->json($advices);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAdviceRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        Advice::create($data);
+
+        return response()->json(['message' => 'Advice added.'], 201);
     }
 
     /**
@@ -37,15 +36,8 @@ class AdviceController extends Controller
      */
     public function show(Advice $advice)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Advice $advice)
-    {
-        //
+        // TODO get random record from database
+        return response()->json($advice);
     }
 
     /**
@@ -53,7 +45,11 @@ class AdviceController extends Controller
      */
     public function update(UpdateAdviceRequest $request, Advice $advice)
     {
-        //
+        $data = $request->validated();
+
+        $advice->update($data);
+
+        return response()->json(['message' => 'Advice updated.']);
     }
 
     /**
@@ -61,6 +57,8 @@ class AdviceController extends Controller
      */
     public function destroy(Advice $advice)
     {
-        //
+        $advice->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

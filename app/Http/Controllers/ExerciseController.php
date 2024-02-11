@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Exercise;
 use App\Http\Requests\StoreExerciseRequest;
 use App\Http\Requests\UpdateExerciseRequest;
-use Mockery\CountValidator\Exception;
 
 class ExerciseController extends Controller
 {
@@ -15,6 +14,7 @@ class ExerciseController extends Controller
     public function index()
     {
         $exercises = Exercise::all();
+        // TODO don't return all columns && add filter
         return response()->json($exercises);
     }
 
@@ -29,6 +29,14 @@ class ExerciseController extends Controller
         Exercise::create($data);
 
         return response()->json(['message' => 'Exercise added.'], 201);
+    }
+
+     /**
+     * Display the specified resource.
+     */
+    public function show(Exercise $exercise)
+    {
+        return response()->json($exercise);
     }
 
     /**

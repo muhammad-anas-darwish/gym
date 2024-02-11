@@ -9,6 +9,7 @@ use App\Models\Chat;
 use App\Models\Exercise;
 use App\Models\Food;
 use App\Models\Muscle;
+use App\Models\MuscleExercise;
 use App\Models\Package;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -33,6 +34,8 @@ class DatabaseSeeder extends Seeder
         Package::factory(3)->create();
 
         Chat::factory(6)->create();
+
+        MuscleExercise::factory(6)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

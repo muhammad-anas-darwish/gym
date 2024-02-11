@@ -4,56 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\MuscleExercise;
 use App\Http\Requests\StoreMuscleExerciseRequest;
-use App\Http\Requests\UpdateMuscleExerciseRequest;
 
 class MuscleExerciseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreMuscleExerciseRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(MuscleExercise $muscleExercise)
-    {
-        //
-    }
+        // store
+        MuscleExercise::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(MuscleExercise $muscleExercise)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateMuscleExerciseRequest $request, MuscleExercise $muscleExercise)
-    {
-        //
+        return response()->json(['message' => 'Muscle exercise added.'], 201);
     }
 
     /**
@@ -61,6 +25,9 @@ class MuscleExerciseController extends Controller
      */
     public function destroy(MuscleExercise $muscleExercise)
     {
-        //
+        // delete
+        $muscleExercise->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

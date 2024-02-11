@@ -51,7 +51,7 @@ class ChatController extends Controller
         if(!$chat['is_private'])
             $chat->update($data);
 
-        return response()->json('Chat updated.');
+        return response()->json(['message' => 'Chat updated.']);
     }
 
     /**
@@ -63,6 +63,6 @@ class ChatController extends Controller
         if(!$chat['is_private'])
             $chat->delete();
 
-        return response()->json('Records deleted.');
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

@@ -9,5 +9,6 @@ class MuscleExercise extends Model
 {
     use HasFactory;
 
+    protected $table = 'muscle_exercise';
     protected $fillable = ['muscle_id', 'exercise_id'];
 }

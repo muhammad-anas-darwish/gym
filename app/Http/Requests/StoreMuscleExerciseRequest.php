@@ -11,7 +11,7 @@ class StoreMuscleExerciseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class StoreMuscleExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'muscle_id' => ['required', 'exists:muscles,id'],
+            'exercise_id' => ['required', 'exists:exercises,id'],
         ];
     }
 }

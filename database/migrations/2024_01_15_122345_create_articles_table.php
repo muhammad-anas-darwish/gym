@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('article_photo_path', 2048)->nullable();
+            $table->integer('views_count', false, true)->default(0);
             $table->timestamps();
         });
     }

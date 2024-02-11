@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdateArticleRequest;
 
 class ArticleController extends Controller
@@ -13,23 +14,24 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        // TODO add filter & sort
+
+        $articles = Article::select('user_id', 'title', 'article_photo_path')->paginate(10);
+
+        return response()->json($articles);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreArticleRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        Article::create($data);
+
+        return response()->json(['message' => 'Article added.'], 201);
     }
 
     /**
@@ -37,15 +39,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-        //
+        $article['views_count']++;
+        $article->save();
+        return response()->json($article);
     }
 
     /**
@@ -53,7 +49,11 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        //
+        $data = $request->validated();
+
+        $article->update($data);
+
+        return response()->json(['message' => 'Article updated.']);
     }
 
     /**
@@ -61,6 +61,8 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

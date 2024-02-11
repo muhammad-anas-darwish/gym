@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdviceController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ExerciseController;
@@ -34,3 +35,4 @@ Route::apiResource('packages', PackageController::class)->only(['index', 'store'
 Route::apiResource('chats', ChatController::class)->only(['index', 'store', 'show','update', 'destroy']);
 Route::apiResource('muscle_exercise', MuscleExerciseController::class)->only(['store', 'destroy']);
 Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+Route::apiResource('articles', ArticleController::class)->only(['index', 'store', 'show', 'update', 'destroy']);

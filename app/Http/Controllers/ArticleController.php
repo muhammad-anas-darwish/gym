@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -28,6 +29,7 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = Auth::id();
 
         Article::create($data);
 
@@ -50,6 +52,7 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $data = $request->validated();
+        $data['user_id'] = Auth::id();
 
         $article->update($data);
 

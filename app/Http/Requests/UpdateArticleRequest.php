@@ -22,7 +22,6 @@ class UpdateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id'],
             'category_id' => ['required', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:64'],
             'description' => ['string'],

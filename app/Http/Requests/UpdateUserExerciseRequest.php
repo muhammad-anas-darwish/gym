@@ -11,7 +11,7 @@ class UpdateUserExerciseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdateUserExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'muscle_id' => ['exists:muscles,id'],
+            'exercise_id' => ['exists:exercises,id'],
+            'sets' => ['between:1,128'],
+            'reps' => ['string', 'max:128'],
+            'order' => ['between:-32,64'],
+            'note' => ['string'],
         ];
     }
 }

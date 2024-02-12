@@ -5,23 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\UserExercise;
 use App\Http\Requests\StoreUserExerciseRequest;
 use App\Http\Requests\UpdateUserExerciseRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserExerciseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the user exercises.
      */
-    public function index()
+    public function getExercises()
     {
-        //
+        // TODO change returned data
+        $userExercises = UserExercise::where('user_id', Auth::id())->get();
+
+        return response()->json($userExercises);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the user exercises for coach.
      */
-    public function create()
+    public function getUserExercises(int $userId)
     {
-        //
+        // TODO change returned data
+        $userExercises = UserExercise::where('user_id', $userId)->get();
+
+        return response()->json($userExercises);
     }
 
     /**
@@ -29,23 +36,11 @@ class UserExerciseController extends Controller
      */
     public function store(StoreUserExerciseRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(UserExercise $userExercise)
-    {
-        //
-    }
+        UserExercise::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UserExercise $userExercise)
-    {
-        //
+        return response()->json(['message' => 'User Exercise added.'], 201);
     }
 
     /**
@@ -53,7 +48,11 @@ class UserExerciseController extends Controller
      */
     public function update(UpdateUserExerciseRequest $request, UserExercise $userExercise)
     {
-        //
+        $data = $request->validated();
+
+        $userExercise->update($data);
+
+        return response()->json(['message' => 'User Exercise updated.']);
     }
 
     /**
@@ -61,6 +60,8 @@ class UserExerciseController extends Controller
      */
     public function destroy(UserExercise $userExercise)
     {
-        //
+        $userExercise->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

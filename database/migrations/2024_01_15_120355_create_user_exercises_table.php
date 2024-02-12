@@ -22,6 +22,7 @@ return new class extends Migration
             $table->smallInteger('sets')->default(3);
             $table->string('reps');
             $table->smallInteger('order')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

@@ -5,23 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Meal;
 use App\Http\Requests\StoreMealRequest;
 use App\Http\Requests\UpdateMealRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class MealController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the user meals.
      */
-    public function index()
+    public function getUserMeals()
     {
-        //
+        $meals = Meal::where('user_id', Auth::id())->get(['id', 'name', 'day']);
+
+        return response()->json($meals);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getMealsOfUser(int $userId)
     {
-        //
+        $meals = Meal::where('user_id', $userId)->get(['id', 'name', 'day']);
+
+        return response()->json($meals);
     }
 
     /**
@@ -29,23 +32,11 @@ class MealController extends Controller
      */
     public function store(StoreMealRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Meal $meal)
-    {
-        //
-    }
+        Meal::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Meal $meal)
-    {
-        //
+        return response()->json(['message' => 'Meal added.'], 201);
     }
 
     /**
@@ -53,7 +44,11 @@ class MealController extends Controller
      */
     public function update(UpdateMealRequest $request, Meal $meal)
     {
-        //
+        $data = $request->validated();
+
+        $meal->update($data);
+
+        return response()->json(['message' => 'Meal updated.']);
     }
 
     /**
@@ -61,6 +56,8 @@ class MealController extends Controller
      */
     public function destroy(Meal $meal)
     {
-        //
+        $meal->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

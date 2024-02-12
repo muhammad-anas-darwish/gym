@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\MealController;
+use App\Http\Controllers\MealFoodController;
 use App\Http\Controllers\MuscleController;
 use App\Http\Controllers\MuscleExerciseController;
 use App\Http\Controllers\PackageController;
@@ -36,3 +38,8 @@ Route::apiResource('chats', ChatController::class)->only(['index', 'store', 'sho
 Route::apiResource('muscle_exercise', MuscleExerciseController::class)->only(['store', 'destroy']);
 Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+Route::apiResource('meals', MealController::class)->only(['store', 'update', 'destroy']);
+Route::get('/meals/my', [MealController::class, 'getUserMeals'])->name('meals.getUserMeals');
+Route::get('/meals/{userId}', [MealController::class, 'getMealsOfUser'])->name('meals.getMealOfUser'); // TODO validate userId
+Route::apiResource('meal_food', MealFoodController::class)->only(['store', 'update', 'destroy']);
+Route::get('/meal_food/{mealId}', [MealFoodController::class, 'getFoods'])->name('meals.getFoods'); // TODO validate mealId

@@ -11,7 +11,7 @@ class UpdateMealRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateMealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:64'],
+            'day' => ['required', 'string', 'max:64'],
         ];
     }
 }

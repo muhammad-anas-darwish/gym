@@ -10,6 +10,8 @@ use App\Models\Category;
 use App\Models\Chat;
 use App\Models\Exercise;
 use App\Models\Food;
+use App\Models\Meal;
+use App\Models\MealFood;
 use App\Models\Muscle;
 use App\Models\MuscleExercise;
 use App\Models\Package;
@@ -42,6 +44,10 @@ class DatabaseSeeder extends Seeder
         Advice::factory(40)->create();
 
         Article::factory(20)->create();
+
+        Meal::factory(40)->create();
+
+        MealFood::factory(40)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

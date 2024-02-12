@@ -9,19 +9,16 @@ use App\Http\Requests\UpdateMealFoodRequest;
 class MealFoodController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the meal food.
      */
-    public function index()
+    public function getFoods(int $mealId)
     {
-        //
-    }
+        $mealFood = MealFood::where('meal_id', $mealId)
+            // TODO add join here
+            ->get();
+        // $mealFood = MealFood::where('meal_id', $mealId)->get(['amount']);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($mealFood);
     }
 
     /**
@@ -29,23 +26,11 @@ class MealFoodController extends Controller
      */
     public function store(StoreMealFoodRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(MealFood $mealFood)
-    {
-        //
-    }
+        MealFood::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(MealFood $mealFood)
-    {
-        //
+        return response()->json(['message' => 'Meal food added.'], 201);
     }
 
     /**
@@ -53,7 +38,11 @@ class MealFoodController extends Controller
      */
     public function update(UpdateMealFoodRequest $request, MealFood $mealFood)
     {
-        //
+        $data = $request->validated();
+
+        $mealFood->update($data);
+
+        return response()->json(['message' => 'Meal food updated.']);
     }
 
     /**
@@ -61,6 +50,8 @@ class MealFoodController extends Controller
      */
     public function destroy(MealFood $mealFood)
     {
-        //
+        $mealFood->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\MealFoodController;
 use App\Http\Controllers\MuscleController;
 use App\Http\Controllers\MuscleExerciseController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +44,4 @@ Route::get('/meals/my', [MealController::class, 'getUserMeals'])->name('meals.ge
 Route::get('/meals/{userId}', [MealController::class, 'getMealsOfUser'])->name('meals.getMealOfUser'); // TODO validate userId
 Route::apiResource('meal_food', MealFoodController::class)->only(['store', 'update', 'destroy']);
 Route::get('/meal_food/{mealId}', [MealFoodController::class, 'getFoods'])->name('meals.getFoods'); // TODO validate mealId
+Route::apiResource('videos', VideoController::class)->only(['index', 'store', 'show', 'update', 'destroy']);

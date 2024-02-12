@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('thumbnail_photo_path', 2048)->nullable();
             $table->string('video');
-            $table->integer('views');
+            $table->integer('views')->default(0);
             $table->timestamps();
         });
     }

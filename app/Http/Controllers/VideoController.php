@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Video;
 use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
@@ -13,15 +14,10 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
-    }
+        // TODO add fiter and sorting
+        $videos = Video::paginate(8);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($videos);
     }
 
     /**
@@ -29,7 +25,12 @@ class VideoController extends Controller
      */
     public function store(StoreVideoRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+
+        Video::create($data);
+
+        return response()->json(['message' => 'Video added.'], 201);
     }
 
     /**
@@ -37,15 +38,10 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        //
-    }
+        $video['views']++;
+        $video->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Video $video)
-    {
-        //
+        return response()->json($video);
     }
 
     /**
@@ -53,7 +49,11 @@ class VideoController extends Controller
      */
     public function update(UpdateVideoRequest $request, Video $video)
     {
-        //
+        $data = $request->validated();
+
+        $video->update($data);
+
+        return response()->json(['message' => 'Video updated.']);
     }
 
     /**
@@ -61,6 +61,8 @@ class VideoController extends Controller
      */
     public function destroy(Video $video)
     {
-        //
+        $video->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

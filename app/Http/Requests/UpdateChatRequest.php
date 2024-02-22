@@ -22,8 +22,8 @@ class UpdateChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:64'],
-            'description' => ['required', 'string'],
+            'title' => ['string', 'min:1', 'max:64'],
+            'description' => ['string'],
             'chat_photo_path' => ['image', 'size:1024'],
         ];
     }

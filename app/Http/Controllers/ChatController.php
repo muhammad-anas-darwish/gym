@@ -24,7 +24,7 @@ class ChatController extends Controller
     public function store(StoreChatRequest $request)
     {
         $data = $request->validated();
-        $data['is_private'] = true;
+        $data['is_private'] = false;
 
         // store
         Chat::create($data);

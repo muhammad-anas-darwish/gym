@@ -24,7 +24,7 @@ class UpdateExerciseRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:64'],
             'description' => ['required', 'string'],
-            'exercise_photo_path' => ['image', 'size:1024'],
+            'exercise_photo_path' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }
 }

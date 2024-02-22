@@ -25,7 +25,8 @@ class ExerciseController extends Controller
     {
         $data = $request->validated();
 
-        // store
+        $data['exercise_photo_path'] = $request->file('image')->store('image');
+
         Exercise::create($data);
 
         return response()->json(['message' => 'Exercise added.'], 201);

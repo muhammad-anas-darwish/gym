@@ -29,31 +29,11 @@ class UserChatController extends Controller
      */
     public function store(StoreUserChatRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(UserChat $userChat)
-    {
-        //
-    }
+        UserChat::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UserChat $userChat)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateUserChatRequest $request, UserChat $userChat)
-    {
-        //
+        return response()->json(['message' => 'User added to chat.'], 201);
     }
 
     /**
@@ -61,6 +41,8 @@ class UserChatController extends Controller
      */
     public function destroy(UserChat $userChat)
     {
-        //
+        $userChat->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

@@ -25,6 +25,7 @@ class StoreChatRequest extends FormRequest
             'title' => ['required', 'string', 'max:64'],
             'description' => ['required', 'string'],
             'chat_photo_path' => ['image', 'size:1024'],
+            'is_private' => ['required', 'boolean'],
         ];
     }
 }

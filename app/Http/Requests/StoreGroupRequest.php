@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreChatRequest extends FormRequest
+class StoreGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,9 @@ class StoreChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'user1_id' => ['required', 'exists:users,id'],
-           'user2_id' => ['required', 'exists:users,id'],
+            'title' => ['required', 'string', 'max:64'],
+            'description' => ['required', 'string'],
+            'image' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\UserChat;
 use App\Http\Requests\StoreChatRequest;
+use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateChatRequest;
 
 class ChatController extends Controller
@@ -19,17 +21,32 @@ class ChatController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage (private chat).
      */
-    public function store(StoreChatRequest $request)
+    public function storePrivateChat(StoreChatRequest $request)
+    {
+        $data = $request->validated();
+
+        $chat = Chat::create(['is_private' => true]);
+        // add users to chat
+
+        UserChat::create(['user_id' => $data['user1_id'], 'chat_id' => $chat['id']]);
+        UserChat::create(['user_id' => $data['user2_id'], 'chat_id' => $chat['id']]);
+
+        return response()->json(['message' => 'Chat added.'], 201);
+    }
+
+    /**
+     * Store a newly created resource in storage (public chat).
+     */
+    public function storeGroup(StoreGroupRequest $request)
     {
         $data = $request->validated();
         $data['is_private'] = false;
 
-        // store
         Chat::create($data);
 
-        return response()->json(['message' => 'Chat added.'], 201);
+        return response()->json(['message' => 'Group added.'], 201);
     }
 
     /**
@@ -47,7 +64,6 @@ class ChatController extends Controller
     {
         $data = $request->validated();
 
-        // update
         if(!$chat['is_private'])
             $chat->update($data);
 
@@ -59,7 +75,6 @@ class ChatController extends Controller
      */
     public function destroy(Chat $chat)
     {
-        // delete
         if(!$chat['is_private'])
             $chat->delete();
 

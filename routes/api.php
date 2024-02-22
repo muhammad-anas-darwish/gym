@@ -11,6 +11,7 @@ use App\Http\Controllers\MealFoodController;
 use App\Http\Controllers\MuscleController;
 use App\Http\Controllers\MuscleExerciseController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserExerciseController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
@@ -36,7 +37,9 @@ Route::apiResource('exercises', ExerciseController::class)->only(['index', 'stor
 Route::apiResource('foods', FoodController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::apiResource('packages', PackageController::class)->only(['index', 'store', 'show','update', 'destroy']);
-Route::apiResource('chats', ChatController::class)->only(['index', 'store', 'show','update', 'destroy']);
+Route::apiResource('chats', ChatController::class)->only(['index', 'show','update', 'destroy']);
+Route::post('/chats/private', [ChatController::class, 'storePrivateChat'])->name('chats.storePrivateChat');
+Route::post('/groups', [ChatController::class, 'storeGroup'])->name('chats.storeGroup');
 Route::apiResource('muscle_exercise', MuscleExerciseController::class)->only(['store', 'destroy']);
 Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
@@ -49,3 +52,4 @@ Route::apiResource('videos', VideoController::class)->only(['index', 'store', 's
 Route::apiResource('user_exercise', UserExerciseController::class)->only(['store', 'update', 'destroy']);
 Route::get('/user_exercise/my', [UserExerciseController::class, 'getExercises'])->name('user_exercise.getExercises');
 Route::get('/user_exercise/{userId}', [UserExerciseController::class, 'getUserExercises'])->name('user_exercise.getUserExercises'); // TODO validate userId
+Route::apiResource('user_chat', UserChatController::class)->only(['store', 'destroy']);

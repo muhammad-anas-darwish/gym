@@ -38,10 +38,12 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        $video['views']++;
+        $video['views'] += 1;
         $video->save();
 
-        return response()->json($video);
+        return response()->json($video->makeHidden('user_id')->load(['user' => function($query) {
+            $query->select('id', 'name');
+        }]));
     }
 
     /**

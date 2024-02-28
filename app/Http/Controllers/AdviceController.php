@@ -37,7 +37,7 @@ class AdviceController extends Controller
     public function show(Advice $advice)
     {
         // TODO get random record from database
-        return response()->json($advice);
+        return response()->json($advice->makeHidden('category_id')->load('category'));
     }
 
     /**

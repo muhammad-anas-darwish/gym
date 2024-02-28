@@ -14,7 +14,7 @@ class ExerciseController extends Controller
     public function index()
     {
         $exercises = Exercise::all();
-        // TODO don't return all columns && add filter
+        // TODO add filter
         return response()->json($exercises);
     }
 
@@ -32,12 +32,13 @@ class ExerciseController extends Controller
         return response()->json(['message' => 'Exercise added.'], 201);
     }
 
-     /**
+    /**
      * Display the specified resource.
      */
     public function show(Exercise $exercise)
     {
-        return response()->json($exercise);
+        // TODO don't return all fields
+        return response()->json($exercise->load('muscles'));
     }
 
     /**

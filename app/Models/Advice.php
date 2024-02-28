@@ -11,4 +11,9 @@ class Advice extends Model
 
     protected $table = 'advices';
     protected $fillable = ['category_id', 'title'];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -45,11 +45,11 @@ Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 
 Route::apiResource('articles', ArticleController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('meals', MealController::class)->only(['store', 'update', 'destroy']);
 Route::get('/meals/my', [MealController::class, 'getUserMeals'])->name('meals.getUserMeals');
-Route::get('/meals/{userId}', [MealController::class, 'getMealsOfUser'])->name('meals.getMealOfUser'); // TODO validate userId
+Route::get('/meals/{userId}', [MealController::class, 'getMealsOfUser'])->name('meals.getMealOfUser')->where('user_id', '[0-9]+');
 Route::apiResource('meal_food', MealFoodController::class)->only(['store', 'update', 'destroy']);
-Route::get('/meal_food/{mealId}', [MealFoodController::class, 'getFoods'])->name('meals.getFoods'); // TODO validate mealId
+Route::get('/meal_food/{mealId}', [MealFoodController::class, 'getFoods'])->name('meals.getFoods')->where('meal_id', '[0-9]+');
 Route::apiResource('videos', VideoController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('user_exercise', UserExerciseController::class)->only(['store', 'update', 'destroy']);
 Route::get('/user_exercise/my', [UserExerciseController::class, 'getExercises'])->name('user_exercise.getExercises');
-Route::get('/user_exercise/{userId}', [UserExerciseController::class, 'getUserExercises'])->name('user_exercise.getUserExercises'); // TODO validate userId
+Route::get('/user_exercise/{userId}', [UserExerciseController::class, 'getUserExercises'])->name('user_exercise.getUserExercises')->where('user_id', '[0-9]+');
 Route::apiResource('user_chat', UserChatController::class)->only(['store', 'destroy']);

@@ -10,7 +10,6 @@ class Exercise extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'exercise_photo_path'];
-    protected $with = ['muscles'];
 
     public function muscles()
     {

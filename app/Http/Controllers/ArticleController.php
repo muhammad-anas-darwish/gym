@@ -41,9 +41,18 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $article['views_count']++;
+        $article['views_count'] += 1;
         $article->save();
-        return response()->json($article);
+
+        return response()->json(
+            $article->makeHidden('user_id')
+            ->load([
+                'category',
+                'user' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])
+        );
     }
 
     /**

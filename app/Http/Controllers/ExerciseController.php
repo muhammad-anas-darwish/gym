@@ -13,9 +13,19 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        $exercises = Exercise::all();
+        // $exercises = Exercise::all();
+
+        $exercises = Exercise::query();
+        $exercises->when(request()->filled('filter'), function ($query) {
+            $filters = explode(',', request('filter'));
+            foreach ($filters as $filter) {
+                [$criteria, $value] = explode(':', $filter);
+                $query->where($criteria, $value);
+            }
+            return $query;
+        });
         // TODO add filter
-        return response()->json($exercises);
+        return response()->json($exercises->get());
     }
 
     /**
@@ -25,7 +35,8 @@ class ExerciseController extends Controller
     {
         $data = $request->validated();
 
-        $data['exercise_photo_path'] = $request->file('image')->store('image');
+        if ($request->hasFile('exercise_photo'))
+            $data['exercise_photo_path'] = $request->file('exercise_photo')->store('/images/exercises', ['disk' => 'public']);
 
         Exercise::create($data);
 
@@ -47,6 +58,9 @@ class ExerciseController extends Controller
     public function update(UpdateExerciseRequest $request, Exercise $exercise)
     {
         $data = $request->validated();
+
+        if ($request->hasFile('exercise_photo'))
+            $data['exercise_photo_path'] = $request->file('exercise_photo')->store('/images/exercises', ['disk' => 'public']);
 
         // update
         $exercise->update($data);

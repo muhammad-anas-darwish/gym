@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +29,8 @@ class ArticleController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = Auth::id();
+        if ($request->hasFile('article_photo'))
+            $data['article_photo_path'] = $request->file('article_photo')->store('/images/articles', ['disk' => 'public']);
 
         Article::create($data);
 
@@ -62,6 +63,8 @@ class ArticleController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = Auth::id();
+        if ($request->hasFile('article_photo'))
+            $data['article_photo_path'] = $request->file('article_photo')->store('/images/articles', ['disk' => 'public']);
 
         $article->update($data);
 

@@ -24,7 +24,7 @@ class UpdateChatRequest extends FormRequest
         return [
             'title' => ['string', 'min:1', 'max:64'],
             'description' => ['string'],
-            'chat_photo_path' => ['image', 'size:1024'],
+            'group_photo' => ['image', 'size:1024'],
         ];
     }
 }

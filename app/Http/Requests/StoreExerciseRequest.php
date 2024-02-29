@@ -24,7 +24,7 @@ class StoreExerciseRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:64'],
             'description' => ['required', 'string'],
-            'image' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'exercise_photo' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }
 }

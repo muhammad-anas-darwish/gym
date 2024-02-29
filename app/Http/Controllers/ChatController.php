@@ -15,7 +15,7 @@ class ChatController extends Controller
      */
     public function index()
     {
-        $chats = Chat::select(['title', 'chat_photo_path'])->paginate(20);
+        $chats = Chat::select(['id', 'title', 'chat_photo_path'])->paginate(20);
 
         return response()->json($chats);
     }
@@ -43,6 +43,8 @@ class ChatController extends Controller
     {
         $data = $request->validated();
         $data['is_private'] = false;
+        if ($request->hasFile('group_photo'))
+            $data['chat_photo_path'] = $request->file('group_photo')->store('/images/chats', ['disk' => 'public']);
 
         Chat::create($data);
 
@@ -64,8 +66,12 @@ class ChatController extends Controller
     {
         $data = $request->validated();
 
-        if(!$chat['is_private'])
+        if(!$chat['is_private']) {
+            if ($request->hasFile('chat_photo'))
+                $data['chat_photo_path'] = $request->file('chat_photo')->store('/images/chats', ['disk' => 'public']);
+
             $chat->update($data);
+        }
 
         return response()->json(['message' => 'Chat updated.']);
     }

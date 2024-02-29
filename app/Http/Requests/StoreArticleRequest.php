@@ -25,6 +25,7 @@ class StoreArticleRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:64'],
             'description' => ['string'],
+            'article_photo' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }
 }

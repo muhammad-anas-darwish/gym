@@ -28,6 +28,11 @@ class VideoController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::id();
 
+        if ($request->hasFile('thumbnail_photo')) // store image
+            $data['thumbnail_photo_path'] = $request->file('thumbnail_photo')->store('/images/videos', ['disk' => 'public']);
+        if ($request->hasFile('video')) // store video
+            $data['video_path'] = $request->file('video')->store('/videos/videos', ['disk' => 'public']);
+
         Video::create($data);
 
         return response()->json(['message' => 'Video added.'], 201);
@@ -52,6 +57,11 @@ class VideoController extends Controller
     public function update(UpdateVideoRequest $request, Video $video)
     {
         $data = $request->validated();
+
+        if ($request->hasFile('thumbnail_photo')) // store image
+            $data['thumbnail_photo_path'] = $request->file('thumbnail_photo')->store('/images/videos', ['disk' => 'public']);
+        if ($request->hasFile('video')) // store video
+            $data['video_path'] = $request->file('video')->store('/videos/videos', ['disk' => 'public']);
 
         $video->update($data);
 

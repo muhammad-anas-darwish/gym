@@ -1,8 +1,8 @@
-<form action="/api/groups/" method="POST" enctype="multipart/form-data">
+<form action="/api/videos/" method="POST" enctype="multipart/form-data">
     @csrf
     <input name="title">
     <input name="description">
-    <input name="group_photo" type="file">
+    <input name="video" type="file">
     <input type="submit">
 
     @if ($errors->any())

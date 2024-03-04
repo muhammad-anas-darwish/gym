@@ -22,8 +22,8 @@ class UpdateMealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:64'],
-            'day' => ['required', 'string', 'max:64'],
+            'name' => ['string', 'max:64'],
+            'day' => ['string', 'max:64'],
         ];
     }
 }

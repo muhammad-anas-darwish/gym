@@ -22,8 +22,8 @@ class UpdateAdviceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:128'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'title' => ['string', 'max:128'],
+            'category_id' => ['exists:categories,id'],
         ];
     }
 }

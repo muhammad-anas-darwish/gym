@@ -22,7 +22,7 @@ class UpdateMuscleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:32'],
+            'name' => ['string', 'max:32'],
         ];
     }
 }

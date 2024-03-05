@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -12,15 +13,39 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // TODO add filter & sort
+        $articles = Article::query();
 
-        $articles = Article::select('user_id', 'title', 'article_photo_path')->paginate(10);
+        // filter by title & description
+        if ($request->query('title')) {
+            $articles = $articles->where('title', 'LIKE', '%'.$request->query('title').'%')
+                ->orWhere('description', 'LIKE', '%'.$request->query('title').'%');
+        }
+
+        // filter by category id
+        if ($request->query('category_id')) {
+            $articles->filterByCategory($request->query('category_id'));
+        }
+
+        // filter by user id
+        if ($request->query('user_id')) {
+            $articles->filterByUser($request->query('user_id'));
+        }
+
+        // sort by created at or views_count attribute
+        if ($request->query('sort_by') === 'created_at') {
+            $articles->orderBy('created_at', 'desc');
+        } elseif ($request->query('sort_by') === 'views_count') {
+            $articles->orderBy('views_count', 'desc');
+        }
+
+        $articles = $articles->with(['user:id,name', 'category'])
+            ->select('id', 'title', 'article_photo_path', 'views_count', 'user_id', 'category_id')
+            ->paginate(10);
 
         return response()->json($articles);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -45,15 +70,9 @@ class ArticleController extends Controller
         $article['views_count'] += 1;
         $article->save();
 
-        return response()->json(
-            $article->makeHidden('user_id')
-            ->load([
-                'category',
-                'user' => function ($query) {
-                    $query->select('id', 'name');
-                }
-            ])
-        );
+        $article = $article->load(['user:id,name', 'category']);
+
+        return response()->json($article);
     }
 
     /**

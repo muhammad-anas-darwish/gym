@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 64);
             $table->text('description');
             $table->string('exercise_photo_path', 2048)->nullable();
-            $table->timestamps();
         });
     }
 

@@ -11,4 +11,5 @@ class Muscle extends Model
 
     protected $table = 'muscles';
     protected $fillable = ['name'];
+    public $timestamps = false;
 }

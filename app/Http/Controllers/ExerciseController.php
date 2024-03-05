@@ -5,27 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Exercise;
 use App\Http\Requests\StoreExerciseRequest;
 use App\Http\Requests\UpdateExerciseRequest;
+use Illuminate\Http\Request;
 
 class ExerciseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // $exercises = Exercise::all();
-
         $exercises = Exercise::query();
-        $exercises->when(request()->filled('filter'), function ($query) {
-            $filters = explode(',', request('filter'));
-            foreach ($filters as $filter) {
-                [$criteria, $value] = explode(':', $filter);
-                $query->where($criteria, $value);
-            }
-            return $query;
-        });
-        // TODO add filter
-        return response()->json($exercises->get());
+
+        if ($request->query('name'))
+            $exercises = $exercises->where('name', 'LIKE', '%'.$request->query('name').'%');
+        if ($request->query('muscle_id'))
+            $exercises->filterByMuscle($request->query('muscle_id'));
+
+        return response()->json($exercises->get(['id', 'name', 'exercise_photo_path']));
     }
 
     /**
@@ -48,7 +44,6 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise)
     {
-        // TODO don't return all fields
         return response()->json($exercise->load('muscles'));
     }
 

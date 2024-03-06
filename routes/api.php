@@ -41,7 +41,8 @@ Route::apiResource('chats', ChatController::class)->only(['index', 'show','updat
 Route::post('/chats/private', [ChatController::class, 'storePrivateChat'])->name('chats.storePrivateChat');
 Route::post('/groups', [ChatController::class, 'storeGroup'])->name('chats.storeGroup');
 Route::apiResource('muscle_exercise', MuscleExerciseController::class)->only(['store', 'destroy']);
-Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+Route::get('/advices/get_random/', [AdviceController::class, 'getRandomAdvice'])->name('advices.getRandomAdvice');
+Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('meals', MealController::class)->only(['store', 'update', 'destroy']);
 Route::get('/meals/my', [MealController::class, 'getUserMeals'])->name('meals.getUserMeals');

@@ -11,6 +11,8 @@ class Advice extends Model
 
     protected $table = 'advices';
     protected $fillable = ['category_id', 'title'];
+    protected $hidden = ['category_id'];
+    public $timestamps = false;
 
     public function category()
     {

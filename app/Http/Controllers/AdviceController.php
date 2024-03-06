@@ -5,15 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Advice;
 use App\Http\Requests\StoreAdviceRequest;
 use App\Http\Requests\UpdateAdviceRequest;
+use Illuminate\Http\Request;
 
 class AdviceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $advices = Advice::paginate(20);
+        $advices = Advice::query();
+
+        // filters
+        if ($request->query('title')) {
+            $advices = $advices->where('title', 'LIKE', '%' . $request->query('title') . '%');
+        }
+
+        if ($request->query('category_id')) {
+            $advices = $advices->where('category_id', $request->query('category_id'));
+        }
+
+        $advices = $advices->select('id', 'title', 'category_id')
+            ->with('category')
+            ->paginate(20);
 
         return response()->json($advices);
     }
@@ -32,12 +46,13 @@ class AdviceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the random resource.
      */
-    public function show(Advice $advice)
+    public function getRandomAdvice()
     {
-        // TODO get random record from database
-        return response()->json($advice->makeHidden('category_id')->load('category'));
+        $randomAdvice = Advice::inRandomOrder()->select('title')->first();
+
+        return response()->json($randomAdvice);
     }
 
     /**

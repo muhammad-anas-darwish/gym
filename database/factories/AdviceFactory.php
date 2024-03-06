@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class AdviceFactory extends Factory
     {
         return [
             'title' => $this->faker->name(),
-            'category_id' => $this->faker->numberBetween(1, 10),
+            'category_id' => $this->faker->randomElement(Category::pluck('id')),
         ];
     }
 }

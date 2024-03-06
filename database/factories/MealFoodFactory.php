@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Food;
+use App\Models\Meal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class MealFoodFactory extends Factory
     public function definition(): array
     {
         return [
-            'food_id' => $this->faker->numberBetween(1, 10),
-            'meal_id' => $this->faker->numberBetween(1, 30),
+            'food_id' => $this->faker->randomElement(Food::pluck('id')),
+            'meal_id' => $this->faker->randomElement(Meal::pluck('id')),
             'amount' => $this->faker->numberBetween(1, 5) . '00 G',
         ];
     }

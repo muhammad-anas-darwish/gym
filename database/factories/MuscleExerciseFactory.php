@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Exercise;
+use App\Models\Muscle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class MuscleExerciseFactory extends Factory
     public function definition(): array
     {
         return [
-            'muscle_id' => $this->faker->numberBetween(1,5),
-            'exercise_id' => $this->faker->numberBetween(1,5),
+            'muscle_id' => $this->faker->randomElement(Muscle::pluck('id')),
+            'exercise_id' => $this->faker->randomElement(Exercise::pluck('id')),
         ];
     }
 }

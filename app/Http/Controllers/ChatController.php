@@ -7,15 +7,22 @@ use App\Models\UserChat;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateChatRequest;
+use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $chats = Chat::select(['id', 'title', 'chat_photo_path'])->paginate(20);
+        $chats = Chat::where('is_private', false);
+
+        if ($request->query('title')) {
+            $chats = $chats->where('title', 'LIKE', '%' . $request->query('title') . '%');
+        }
+
+        $chats = $chats->select(['id', 'title', 'chat_photo_path'])->paginate(20);
 
         return response()->json($chats);
     }

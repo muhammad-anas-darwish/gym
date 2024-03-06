@@ -14,9 +14,9 @@ class MealFoodController extends Controller
     public function getFoods(int $mealId)
     {
         $mealFood = MealFood::where('meal_id', $mealId)
-            // TODO add join here
+            ->with('meal:id,name,day', 'food:id,name')
+            ->select('id', 'meal_id', 'food_id', 'amount')
             ->get();
-        // $mealFood = MealFood::where('meal_id', $mealId)->get(['amount']);
 
         return response()->json($mealFood);
     }

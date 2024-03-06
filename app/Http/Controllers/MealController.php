@@ -20,6 +20,9 @@ class MealController extends Controller
         return response()->json($meals);
     }
 
+    /**
+     * Display a listing of the user meals for admin.
+     */
     public function getMealsOfUser(int $userId)
     {
         $meals = Meal::where('user_id', $userId)->get(['id', 'name', 'day']);

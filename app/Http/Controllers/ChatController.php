@@ -34,9 +34,21 @@ class ChatController extends Controller
     {
         $data = $request->validated();
 
-        $chat = Chat::create(['is_private' => true]);
-        // add users to chat
+        // Check if there is an existing private chat between the two users
+        $existingChat = UserChat::select('chat_id')
+            ->whereIn('user_id', [$data['user1_id'], $data['user2_id']])
+            ->groupBy('chat_id')
+            ->havingRaw('COUNT(DISTINCT user_id) = 2')
+            ->first();
 
+        if ($existingChat) {
+            return response()->json(['message' => 'Chat already exists.'], 200);
+        }
+
+
+        $chat = Chat::create(['is_private' => true]);
+
+        // add users to chat
         UserChat::create(['user_id' => $data['user1_id'], 'chat_id' => $chat['id']]);
         UserChat::create(['user_id' => $data['user2_id'], 'chat_id' => $chat['id']]);
 

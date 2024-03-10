@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Video;
 use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
@@ -12,10 +13,34 @@ class VideoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // TODO add fiter and sorting
-        $videos = Video::paginate(8);
+        $videos = Video::query();
+
+        // serach by title and description
+        if ($request->query('title')) {
+            $videos->where('title', 'LIKE', '%' . $request->query('title') . '%')
+                ->orWhere('description', 'LIKE', '%' . $request->query('title') . '%');
+        }
+
+        // filter by user name
+        if ($request->query('user_name')) {
+            $videos->filterByUserName($request->query('user_name'));
+        }
+
+        // filter by user id
+        if ($request->query('user_id')) {
+            $videos->filterByUserId($request->query('user_id'));
+        }
+
+        // sort by created at or views_count attribute
+        if ($request->query('sort_by') === 'created_at') {
+            $videos->orderBy('created_at', 'desc');
+        } else {
+            $videos->orderBy('views', 'desc');
+        }
+
+        $videos = $videos->with('user:id,name')->paginate(8);
 
         return response()->json($videos);
     }
@@ -46,9 +71,7 @@ class VideoController extends Controller
         $video['views'] += 1;
         $video->save();
 
-        return response()->json($video->makeHidden('user_id')->load(['user' => function($query) {
-            $query->select('id', 'name');
-        }]));
+        return response()->json($video->load(['user:id,name']));
     }
 
     /**

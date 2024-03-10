@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\UserChat;
 use App\Http\Requests\StoreUserChatRequest;
-use App\Http\Requests\UpdateUserChatRequest;
 
 class UserChatController extends Controller
 {

@@ -23,7 +23,8 @@ class StoreUserChatRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'exists:users,id'],
-            'chat_id' => ['required', 'exists:chats,id'],
+            'chat_id' => ['required', 'exists:chats,id', 'unique:user_chat,user_id,'],
+            'user_id' => 'unique:user_chat,user_id,NULL,id,chat_id,'.$this->chat_id
         ];
     }
 }

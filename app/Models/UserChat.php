@@ -11,4 +11,9 @@ class UserChat extends Model
 
     protected $table = 'user_chat';
     protected $fillable = ['user_id', 'chat_id'];
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class);
+    }
 }

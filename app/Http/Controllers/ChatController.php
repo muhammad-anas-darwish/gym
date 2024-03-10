@@ -12,17 +12,34 @@ use Illuminate\Http\Request;
 class ChatController extends Controller
 {
     /**
+     * Display a listing of the chat members
+     */
+    function getMembers(int $chatId) {
+        $userChat = UserChat::where('chat_id', $chatId)
+            ->select('user_id')
+            ->with('user:id,name,profile_photo_path,is_admin,is_coach')
+            ->paginate(20)
+            ->makeHidden(['user_id']);
+
+        return response()->json($userChat);
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $chats = Chat::where('is_private', false);
+        $chats = Chat::query();
 
-        if ($request->query('title')) {
-            $chats = $chats->where('title', 'LIKE', '%' . $request->query('title') . '%');
+        if ($request->query('q')) {
+            $chats = $chats->where('title', 'LIKE', '%' . $request->query('q') . '%');
         }
 
-        $chats = $chats->select(['id', 'title', 'chat_photo_path'])->paginate(20);
+        if ($request->query('is_private') !== null) {
+            $chats = $chats->where('is_private', $request->query('is_private'));
+        }
+
+        $chats = $chats->select(['id', 'title', 'chat_photo_path', 'is_private'])->paginate(20);
 
         return response()->json($chats);
     }

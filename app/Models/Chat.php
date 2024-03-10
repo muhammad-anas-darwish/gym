@@ -9,4 +9,9 @@ class Chat extends Model
 {
     use HasFactory;
     protected $fillable = ['title', 'is_private', 'description', 'chat_photo_path'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_chat');
+    }
 }

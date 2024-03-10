@@ -7,14 +7,17 @@ use App\Models\UserChat;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateChatRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
     /**
      * Display a listing of the chat members
      */
-    function getMembers(int $chatId) {
+    function getMembers(int $chatId)
+    {
         $userChat = UserChat::where('chat_id', $chatId)
             ->select('user_id')
             ->with('user:id,name,profile_photo_path,is_admin,is_coach')
@@ -22,6 +25,18 @@ class ChatController extends Controller
             ->makeHidden(['user_id']);
 
         return response()->json($userChat);
+    }
+
+    /**
+     * Display a listing of the chat members
+     */
+    function getUserChats()
+    {
+        $chats = Chat::whereHas('users', function ($query) {
+            $query->where('user_id', Auth::id());
+        })->get(['id', 'title', 'is_private', 'chat_photo_path', 'created_at']);
+
+        return response()->json($chats);
     }
 
     /**

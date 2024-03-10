@@ -38,6 +38,7 @@ Route::apiResource('foods', FoodController::class)->only(['index', 'show', 'stor
 Route::apiResource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::apiResource('packages', PackageController::class)->only(['index', 'store', 'show','update', 'destroy']);
 Route::get('/chats/members/{chatId}', [ChatController::class, 'getMembers'])->name('chats.getMembers')->whereNumber('chatId');
+Route::get('/chats/get_user_chats', [ChatController::class, 'getUserChats'])->name('chats.getUserChats');
 Route::post('/chats/private', [ChatController::class, 'storePrivateChat'])->name('chats.storePrivateChat');
 Route::apiResource('chats', ChatController::class)->only(['index', 'show','update', 'destroy']);
 Route::post('/groups', [ChatController::class, 'storeGroup'])->name('chats.storeGroup');

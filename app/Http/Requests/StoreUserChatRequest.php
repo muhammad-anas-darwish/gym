@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUserChatRequest extends FormRequest
 {
@@ -23,8 +24,23 @@ class StoreUserChatRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'exists:users,id'],
-            'chat_id' => ['required', 'exists:chats,id', 'unique:user_chat,user_id,'],
+            'chat_id' => ['required', 'exists:chats,id', 'unique:user_chat,user_id,',
+                Rule::exists('chats', 'id')->where(function ($query) {
+                    $query->where('is_private', false);
+                })],
             'user_id' => 'unique:user_chat,user_id,NULL,id,chat_id,'.$this->chat_id
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'chat_id.exists' => 'The selected chat is invalid or private.',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserChat;
 use App\Http\Requests\StoreUserChatRequest;
+use Illuminate\Support\Facades\Log;
 
 class UserChatController extends Controller
 {
@@ -24,6 +25,10 @@ class UserChatController extends Controller
      */
     public function destroy(UserChat $userChat)
     {
+        if ($userChat->chat->is_private) {
+            return response()->json(['error' => 'Cannot delete user from private chat.'], 403);
+        }
+
         $userChat->delete();
 
         return response()->json(['message' => 'Record deleted.'], 204);

@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+
             $table->string('title');
             $table->text('description');
             $table->smallInteger('limit'); // limit days
             $table->double('price');
+
             $table->timestamps();
         });
     }

@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBiginteger('user_id');
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->string('thumbnail_photo_path', 2048)->nullable();
             $table->string('video_path');
             $table->integer('views')->default(0);
+
             $table->timestamps();
         });
     }

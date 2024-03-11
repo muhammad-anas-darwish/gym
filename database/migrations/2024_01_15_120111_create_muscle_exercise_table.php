@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('muscle_exercise', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBiginteger('muscle_id');
             $table->unsignedBiginteger('exercise_id');
+
             $table->foreign('muscle_id')->references('id')->on('muscles')->onDelete('cascade');
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
+
+            $table->unique(['muscle_id', 'exercise_id']);
         });
     }
 

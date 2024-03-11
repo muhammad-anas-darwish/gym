@@ -16,6 +16,7 @@ use App\Models\Muscle;
 use App\Models\MuscleExercise;
 use App\Models\Package;
 use App\Models\User;
+use App\Models\UserChat;
 use App\Models\UserExercise;
 use App\Models\Video;
 use Illuminate\Database\Seeder;
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        User::factory(20)->create();
 
         Muscle::factory(10)->create();
 
@@ -39,7 +40,7 @@ class DatabaseSeeder extends Seeder
 
         Package::factory(3)->create();
 
-        Chat::factory(6)->create();
+        Chat::factory(20)->create();
 
         MuscleExercise::factory(6)->create();
 
@@ -49,11 +50,13 @@ class DatabaseSeeder extends Seeder
 
         Meal::factory(40)->create();
 
-        MealFood::factory(40)->create();
+        MealFood::factory(80)->create();
 
         // Video::factory(10)->create();
 
         UserExercise::factory(50)->create();
+
+        UserChat::factory(60)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

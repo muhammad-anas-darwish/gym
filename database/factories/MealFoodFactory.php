@@ -18,9 +18,12 @@ class MealFoodFactory extends Factory
      */
     public function definition(): array
     {
+        $foodIds = Food::pluck('id')->toArray();
+        $mealIds = Meal::pluck('id')->toArray();
+
         return [
-            'food_id' => $this->faker->randomElement(Food::pluck('id')),
-            'meal_id' => $this->faker->randomElement(Meal::pluck('id')),
+            'food_id' => $this->faker->randomElement($foodIds),
+            'meal_id' => $this->faker->randomElement($mealIds),
             'amount' => $this->faker->numberBetween(1, 5) . '00 G',
         ];
     }

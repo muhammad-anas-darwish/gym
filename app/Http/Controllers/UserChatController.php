@@ -26,6 +26,6 @@ class UserChatController extends Controller
     {
         $userChat->delete();
 
-        return response()->json(['message' => 'Records deleted.'], 204);
+        return response()->json(['message' => 'Record deleted.'], 204);
     }
 }

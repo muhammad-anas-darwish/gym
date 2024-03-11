@@ -14,8 +14,10 @@ class UserExerciseController extends Controller
      */
     public function getExercises()
     {
-        // TODO change returned data
-        $userExercises = UserExercise::where('user_id', Auth::id())->get();
+        $userExercises = UserExercise::where('user_id', Auth::id())
+            ->with('muscle', 'exercise')
+            ->orderBy('order')
+            ->get();
 
         return response()->json($userExercises);
     }
@@ -25,8 +27,10 @@ class UserExerciseController extends Controller
      */
     public function getUserExercises(int $userId)
     {
-        // TODO change returned data
-        $userExercises = UserExercise::where('user_id', $userId)->get();
+        $userExercises = UserExercise::where('user_id', $userId)
+            ->with('muscle', 'exercise')
+            ->orderBy('order')
+            ->get();
 
         return response()->json($userExercises);
     }

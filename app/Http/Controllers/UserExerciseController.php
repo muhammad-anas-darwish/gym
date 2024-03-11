@@ -17,7 +17,8 @@ class UserExerciseController extends Controller
         $userExercises = UserExercise::where('user_id', Auth::id())
             ->with('muscle', 'exercise')
             ->orderBy('order')
-            ->get();
+            ->get()
+            ->groupBy('trainingSession.title');
 
         return response()->json($userExercises);
     }
@@ -30,7 +31,8 @@ class UserExerciseController extends Controller
         $userExercises = UserExercise::where('user_id', $userId)
             ->with('muscle', 'exercise')
             ->orderBy('order')
-            ->get();
+            ->get()
+            ->groupBy('trainingSession.title');
 
         return response()->json($userExercises);
     }

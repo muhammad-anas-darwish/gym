@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Chat;
 use App\Models\User;
+use App\Models\UserChat;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,10 +21,17 @@ class UserChatFactory extends Factory
     {
         $userIds = User::pluck('id')->toArray();
         $chatIds = Chat::pluck('id')->toArray();
+        $userId = null;
+        $chatId = null;
+
+        do {
+            $userId = $this->faker->randomElement($userIds);
+            $chatId = $this->faker->randomElement($chatIds);
+        } while (UserChat::where('user_id', $userId)->where('chat_id', $chatId)->exists());
 
         return [
-            'user_id' => $this->faker->randomElement($userIds),
-            'chat_id' => $this->faker->randomElement($chatIds),
+            'user_id' => $userId,
+            'chat_id' => $chatId,
         ];
     }
 }

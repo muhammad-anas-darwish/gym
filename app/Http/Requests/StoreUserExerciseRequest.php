@@ -26,6 +26,7 @@ class StoreUserExerciseRequest extends FormRequest
             'user_id' => ['required', 'exists:users,id'],
             'muscle_id' => ['required', 'exists:muscles,id'],
             'exercise_id' => ['required', 'exists:exercises,id'],
+            'training_session_id' => ['required', 'exists:training_sessions,id'],
             'sets' => ['required', 'between:1,128'],
             'reps' => ['required', 'string', 'max:128'],
             'order' => ['required', 'between:-32,64'],

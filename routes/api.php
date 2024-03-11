@@ -11,6 +11,7 @@ use App\Http\Controllers\MealFoodController;
 use App\Http\Controllers\MuscleController;
 use App\Http\Controllers\MuscleExerciseController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserExerciseController;
 use App\Http\Controllers\VideoController;
@@ -56,3 +57,4 @@ Route::apiResource('user_exercise', UserExerciseController::class)->only(['store
 Route::get('/user_exercise/my', [UserExerciseController::class, 'getExercises'])->name('user_exercise.getExercises');
 Route::get('/user_exercise/{userId}', [UserExerciseController::class, 'getUserExercises'])->name('user_exercise.getUserExercises')->whereNumber('userId');
 Route::apiResource('user_chat', UserChatController::class)->only(['store', 'destroy']);
+Route::apiResource('training_sessions', TrainingSessionController::class)->only(['index', 'store', 'update', 'destroy']);

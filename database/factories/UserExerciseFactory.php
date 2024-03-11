@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Exercise;
 use App\Models\Muscle;
+use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\UserExercise;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,6 +25,7 @@ class UserExerciseFactory extends Factory
             'user_id' => $this->faker->randomElement(User::pluck('id')),
             'muscle_id' => $this->faker->randomElement(Muscle::pluck('id')),
             'exercise_id' => $this->faker->randomElement(Exercise::pluck('id')),
+            'training_session_id' => $this->faker->randomElement(TrainingSession::pluck('id')),
             'sets' => $this->faker->numberBetween(1, 5),
             'reps' => $this->faker->numberBetween(8, 12),
             'note' => $this->faker->text(64),

@@ -7,7 +7,6 @@ use App\Models\UserChat;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateChatRequest;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

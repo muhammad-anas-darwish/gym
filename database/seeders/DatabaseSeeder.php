@@ -15,6 +15,7 @@ use App\Models\MealFood;
 use App\Models\Muscle;
 use App\Models\MuscleExercise;
 use App\Models\Package;
+use App\Models\Report;
 use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\UserChat;
@@ -60,6 +61,8 @@ class DatabaseSeeder extends Seeder
         TrainingSession::factory(10)->create();
 
         UserExercise::factory(50)->create();
+
+        Report::factory(40)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

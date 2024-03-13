@@ -17,10 +17,12 @@ return new class extends Migration
             $table->unsignedBiginteger('user_id');
             $table->unsignedBiginteger('muscle_id');
             $table->unsignedBiginteger('exercise_id');
+            $table->unsignedBiginteger('training_session_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('muscle_id')->references('id')->on('muscles')->onDelete('cascade');
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
+            $table->foreign('training_session_id')->references('id')->on('training_sessions')->onDelete('cascade');
 
             $table->smallInteger('sets')->default(3);
             $table->string('reps');

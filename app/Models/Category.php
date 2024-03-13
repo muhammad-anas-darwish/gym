@@ -11,4 +11,5 @@ class Category extends Model
 
     protected $fillable = ['title'];
     protected $visible = ['id', 'title'];
+    public $timestamps = false;
 }

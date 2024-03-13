@@ -17,8 +17,8 @@ class AdviceController extends Controller
         $advices = Advice::query();
 
         // filters
-        if ($request->query('title')) {
-            $advices = $advices->where('title', 'LIKE', '%' . $request->query('title') . '%');
+        if ($request->query('q')) {
+            $advices = $advices->where('title', 'LIKE', '%' . $request->query('q') . '%');
         }
 
         if ($request->query('category_id')) {

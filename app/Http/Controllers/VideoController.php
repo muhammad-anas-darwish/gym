@@ -18,9 +18,9 @@ class VideoController extends Controller
         $videos = Video::query();
 
         // serach by title and description
-        if ($request->query('title')) {
-            $videos->where('title', 'LIKE', '%' . $request->query('title') . '%')
-                ->orWhere('description', 'LIKE', '%' . $request->query('title') . '%');
+        if ($request->query('q')) {
+            $videos->where('title', 'LIKE', '%' . $request->query('q') . '%')
+                ->orWhere('description', 'LIKE', '%' . $request->query('q') . '%');
         }
 
         // filter by user name

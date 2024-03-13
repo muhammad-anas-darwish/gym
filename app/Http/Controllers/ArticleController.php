@@ -18,9 +18,9 @@ class ArticleController extends Controller
         $articles = Article::query();
 
         // filter by title & description
-        if ($request->query('title')) {
-            $articles = $articles->where('title', 'LIKE', '%'.$request->query('title').'%')
-                ->orWhere('description', 'LIKE', '%'.$request->query('title').'%');
+        if ($request->query('q')) {
+            $articles = $articles->where('title', 'LIKE', '%'.$request->query('q').'%')
+                ->orWhere('description', 'LIKE', '%'.$request->query('q').'%');
         }
 
         // filter by category id

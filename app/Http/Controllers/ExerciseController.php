@@ -16,8 +16,8 @@ class ExerciseController extends Controller
     {
         $exercises = Exercise::query();
 
-        if ($request->query('name'))
-            $exercises = $exercises->where('name', 'LIKE', '%'.$request->query('name').'%');
+        if ($request->query('q'))
+            $exercises = $exercises->where('name', 'LIKE', '%'.$request->query('q').'%');
         if ($request->query('muscle_id'))
             $exercises->filterByMuscle($request->query('muscle_id'));
 

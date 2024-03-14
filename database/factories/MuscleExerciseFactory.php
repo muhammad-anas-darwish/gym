@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MuscleExerciseFactory extends Factory
 {
+    public static $paris = [];
+
+
     /**
      * Define the model's default state.
      *
@@ -18,9 +21,28 @@ class MuscleExerciseFactory extends Factory
      */
     public function definition(): array
     {
+        $muscleIds = Muscle::pluck('id')->toArray();
+        $exerciseIds = Exercise::pluck('id')->toArray();
+        $muscleId = null;
+        $exerciseId = null;
+
+        do {
+            $muscleId = $this->faker->randomElement($muscleIds);
+            $exerciseId = $this->faker->randomElement($exerciseIds);
+            $found = false;
+
+            foreach (self::$paris as $pair) {
+                if ($pair[0] == $muscleId && $pair[1] == $exerciseId) {
+                    $found = true;
+                    break;
+                }
+            }
+        } while ($found);
+        array_push(self::$paris, array($muscleId, $exerciseId));
+
         return [
-            'muscle_id' => $this->faker->randomElement(Muscle::pluck('id')),
-            'exercise_id' => $this->faker->randomElement(Exercise::pluck('id')),
+            'muscle_id' => $muscleId,
+            'exercise_id' => $exerciseId,
         ];
     }
 }

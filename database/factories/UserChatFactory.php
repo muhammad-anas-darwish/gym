@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Chat;
 use App\Models\User;
-use App\Models\UserChat;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -12,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserChatFactory extends Factory
 {
+    public static $paris = [];
+
     /**
      * Define the model's default state.
      *
@@ -27,7 +28,16 @@ class UserChatFactory extends Factory
         do {
             $userId = $this->faker->randomElement($userIds);
             $chatId = $this->faker->randomElement($chatIds);
-        } while (UserChat::where('user_id', $userId)->where('chat_id', $chatId)->exists());
+            $found = false;
+
+            foreach (self::$paris as $pair) {
+                if ($pair[0] == $userId && $pair[1] == $chatId) {
+                    $found = true;
+                    break;
+                }
+            }
+        } while ($found);
+        array_push(self::$paris, array($userId, $chatId));
 
         return [
             'user_id' => $userId,

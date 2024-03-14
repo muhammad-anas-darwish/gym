@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Food;
 use App\Models\Meal;
-use App\Models\MealFood;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -12,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MealFoodFactory extends Factory
 {
+    public static $paris = [];
+
     /**
      * Define the model's default state.
      *
@@ -23,10 +24,20 @@ class MealFoodFactory extends Factory
         $mealIds = Meal::pluck('id')->toArray();
         $foodId = null;
         $mealId = null;
+
         do {
             $foodId = $this->faker->randomElement($foodIds);
             $mealId = $this->faker->randomElement($mealIds);
-        } while (MealFood::where('food_id', $foodId)->where('meal_id', $mealId)->exists());
+            $found = false;
+
+            foreach (self::$paris as $pair) {
+                if ($pair[0] == $foodId && $pair[1] == $mealId) {
+                    $found = true;
+                    break;
+                }
+            }
+        } while ($found);
+        array_push(self::$paris, array($foodId, $mealId));
 
         return [
             'food_id' => $foodId,

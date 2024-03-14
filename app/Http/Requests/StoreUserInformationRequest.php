@@ -11,7 +11,7 @@ class StoreUserInformationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class StoreUserInformationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'weight' => ['required', 'numeric', 'between:0,999.99'],
+            'height' => ['required', 'integer', 'between:0,1000'],
         ];
     }
 }

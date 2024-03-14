@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_information', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBiginteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->double('weight');
+            $table->integer('height');
             $table->timestamps();
         });
     }

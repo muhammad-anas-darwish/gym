@@ -15,6 +15,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserExerciseController;
+use App\Http\Controllers\UserInformationController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -61,3 +62,6 @@ Route::apiResource('user_chat', UserChatController::class)->only(['store', 'dest
 Route::apiResource('training_sessions', TrainingSessionController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'show', 'destroy']);
 Route::get('/reports/mark_as_read/{report}', [ReportController::class, 'markAsRead'])->name('reports.markAsRead');
+Route::apiResource('user_information', UserInformationController::class)->only(['store', 'destroy']);
+Route::get('/user_information/{userId}', [UserInformationController::class, 'getUserInformationForCoach'])->name('user_information.getUserInformationForCoach')->whereNumber('userId');
+Route::get('/user_information', [UserInformationController::class, 'getUserInformationForUser'])->name('user_information.getUserInformationForUser');

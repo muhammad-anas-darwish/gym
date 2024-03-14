@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\UserInformation;
 use App\Http\Requests\StoreUserInformationRequest;
-use App\Http\Requests\UpdateUserInformationRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserInformationController extends Controller
 {
     /**
+     * Display a listing of the resource for coach.
+     */
+    public function getUserInformationForCoach(int $user_id)
+    {
+        $userInformation = UserInformation::where('user_id', $user_id)->get();
+
+        return response()->json($userInformation);
+    }
+
+    /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getUserInformationForUser()
     {
-        //
+        $userInformation = UserInformation::where('user_id', Auth::id())->get();
+
+        return response()->json($userInformation);
     }
 
     /**
@@ -21,23 +33,12 @@ class UserInformationController extends Controller
      */
     public function store(StoreUserInformationRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(UserInformation $userInformation)
-    {
-        //
-    }
+        UserInformation::create($data);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateUserInformationRequest $request, UserInformation $userInformation)
-    {
-        //
+        return response()->json(['message' => 'User information added.'], 201);
     }
 
     /**
@@ -45,6 +46,8 @@ class UserInformationController extends Controller
      */
     public function destroy(UserInformation $userInformation)
     {
-        //
+        $userInformation->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

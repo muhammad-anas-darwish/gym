@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class UserInformationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'height' => $this->faker->randomNumber(2),
+            'weight' => $this->faker->randomFloat(2, 0, 1000),
+            'user_id' => $this->faker->randomElement(User::pluck('id')),
         ];
     }
 }

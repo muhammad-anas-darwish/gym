@@ -20,6 +20,7 @@ use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\UserChat;
 use App\Models\UserExercise;
+use App\Models\UserInformation;
 use App\Models\Video;
 use Illuminate\Database\Seeder;
 
@@ -63,6 +64,8 @@ class DatabaseSeeder extends Seeder
         UserExercise::factory(50)->create();
 
         Report::factory(40)->create();
+
+        UserInformation::factory(30)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

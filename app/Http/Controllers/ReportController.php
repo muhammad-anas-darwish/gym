@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Filter;
 use App\Models\Report;
 use App\Http\Requests\StoreReportRequest;
 use Illuminate\Http\Request;
@@ -16,9 +17,8 @@ class ReportController extends Controller
     {
         $reports = Report::query();
 
-        if ($request->query('is_read') !== null) {
-            $reports = $reports->where('is_read', $request->query('is_read'));
-        }
+        $filter = new Filter($reports);
+        $filter->where('is_read', $request->query('is_read'));
 
         $reports = $reports->select('title', 'is_read')
             ->with('user:id,name,email')

@@ -25,14 +25,4 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function scopeFilterByUser($query, $userId)
-    {
-        return $query->where('user_id', $userId);
-    }
-
-    public function scopeFilterByCategory($query, $categoryId)
-    {
-        return $query->where('category_id', $categoryId);
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Filter;
 use App\Models\Video;
 use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
@@ -17,28 +18,14 @@ class VideoController extends Controller
     {
         $videos = Video::query();
 
-        // serach by title and description
-        if ($request->query('q')) {
-            $videos->where('title', 'LIKE', '%' . $request->query('q') . '%')
-                ->orWhere('description', 'LIKE', '%' . $request->query('q') . '%');
-        }
-
-        // filter by user name
-        if ($request->query('user_name')) {
-            $videos->filterByUserName($request->query('user_name'));
-        }
-
-        // filter by user id
-        if ($request->query('user_id')) {
-            $videos->filterByUserId($request->query('user_id'));
-        }
-
-        // sort by created at or views_count attribute
-        if ($request->query('sort_by') === 'created_at') {
-            $videos->orderBy('created_at', 'desc');
-        } else {
-            $videos->orderBy('views', 'desc');
-        }
+        $filter = new Filter($videos);
+        $filter->search([
+            'title' => $request->query('q'),
+            'description' => $request->query('q')
+            ])
+            ->whereHasByColumn('user', 'name', $request->query('user_name'))
+            ->whereHas('user', 'user_id', $request->query('user_id'))
+            ->orderBy(['created_at', 'views'], $request->query('sort_by'), 'desc');
 
         $videos = $videos->with('user:id,name')->paginate(8);
 

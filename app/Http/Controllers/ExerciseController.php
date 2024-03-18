@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Filter;
 use App\Models\Exercise;
 use App\Http\Requests\StoreExerciseRequest;
 use App\Http\Requests\UpdateExerciseRequest;
@@ -16,10 +17,9 @@ class ExerciseController extends Controller
     {
         $exercises = Exercise::query();
 
-        if ($request->query('q'))
-            $exercises = $exercises->where('name', 'LIKE', '%'.$request->query('q').'%');
-        if ($request->query('muscle_id'))
-            $exercises->filterByMuscle($request->query('muscle_id'));
+        $filter = new Filter($exercises);
+        $filter->search(['name' => $request->query('q')])
+            ->whereHas('muscles', 'muscle_id', $request->query('muscle_id'));
 
         return response()->json($exercises->get(['id', 'name', 'exercise_photo_path']));
     }

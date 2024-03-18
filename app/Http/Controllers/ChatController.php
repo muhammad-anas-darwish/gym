@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Filter;
 use App\Models\Chat;
 use App\Models\UserChat;
 use App\Http\Requests\StoreChatRequest;
@@ -45,13 +46,9 @@ class ChatController extends Controller
     {
         $chats = Chat::query();
 
-        if ($request->query('q')) {
-            $chats = $chats->where('title', 'LIKE', '%' . $request->query('q') . '%');
-        }
-
-        if ($request->query('is_private') !== null) {
-            $chats = $chats->where('is_private', $request->query('is_private'));
-        }
+        $filter = new Filter($chats);
+        $filter->search(['title' => $request->query('q')])
+            ->where('is_private', $request->query('is_private'));
 
         $chats = $chats->select(['id', 'title', 'chat_photo_path', 'is_private'])->paginate(20);
 

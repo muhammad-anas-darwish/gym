@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Filter;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -17,28 +18,15 @@ class ArticleController extends Controller
     {
         $articles = Article::query();
 
-        // filter by title & description
-        if ($request->query('q')) {
-            $articles = $articles->where('title', 'LIKE', '%'.$request->query('q').'%')
-                ->orWhere('description', 'LIKE', '%'.$request->query('q').'%');
-        }
 
-        // filter by category id
-        if ($request->query('category_id')) {
-            $articles->filterByCategory($request->query('category_id'));
-        }
-
-        // filter by user id
-        if ($request->query('user_id')) {
-            $articles->filterByUser($request->query('user_id'));
-        }
-
-        // sort by created at or views_count attribute
-        if ($request->query('sort_by') === 'created_at') {
-            $articles->orderBy('created_at', 'desc');
-        } elseif ($request->query('sort_by') === 'views_count') {
-            $articles->orderBy('views_count', 'desc');
-        }
+        $filter = new Filter($articles);
+        $filter->search([
+            'title' => $request->query('q'),
+            'description' => $request->query(('q')),
+            ])
+            ->where('category_id', $request->query('category_id'))
+            ->where('user_id', $request->query('user_id'))
+            ->orderBy(['created_at', 'views_count'], $request->query('sort_by'), 'desc');
 
         $articles = $articles->with(['user:id,name', 'category'])
             ->select('id', 'title', 'article_photo_path', 'views_count', 'user_id', 'category_id')

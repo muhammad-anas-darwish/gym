@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Filter;
 use App\Models\Advice;
 use App\Http\Requests\StoreAdviceRequest;
 use App\Http\Requests\UpdateAdviceRequest;
@@ -17,13 +18,9 @@ class AdviceController extends Controller
         $advices = Advice::query();
 
         // filters
-        if ($request->query('q')) {
-            $advices = $advices->where('title', 'LIKE', '%' . $request->query('q') . '%');
-        }
-
-        if ($request->query('category_id')) {
-            $advices = $advices->where('category_id', $request->query('category_id'));
-        }
+        $filter = new Filter($advices);
+        $filter->search(['title' => $request->query('q')])
+            ->where('category_id', $request->query('category_id'));
 
         $advices = $advices->select('id', 'title', 'category_id')
             ->with('category')

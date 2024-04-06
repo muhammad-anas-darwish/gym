@@ -13,6 +13,12 @@ class Filter
         $this->query = $query;
     }
 
+    /**
+     * Search for records based on the provided rules.
+     *
+     * @param array $rules
+     * @return Filter
+     */
     public function search(array $rules): Filter
     {
         if ($rules[key($rules)]) {
@@ -28,6 +34,14 @@ class Filter
         return $this;
     }
 
+    /**
+     * Add a relationship constraint to the query.
+     *
+     * @param string $relationshipName
+     * @param string $fieldName
+     * @param int|null $id
+     * @return Filter
+     */
     public function whereHas(string $relationshipName, string $fieldName, ?int $id): Filter
     {
         if ($id) {
@@ -39,6 +53,14 @@ class Filter
         return $this;
     }
 
+    /**
+     * Add a relationship constraint to the query based on a column value.
+     *
+     * @param string $relationshipName
+     * @param string $fieldName
+     * @param string|null $value
+     * @return Filter
+     */
     public function whereHasByColumn(string $relationshipName, string $fieldName, ?string $value): Filter
     {
         if ($value) {
@@ -50,6 +72,13 @@ class Filter
         return $this;
     }
 
+    /**
+     * Add a basic WHERE clause to the query based on the given field and value.
+     *
+     * @param string $fieldName
+     * @param mixed $value
+     * @return Filter
+     */
     public function where(string $fieldName, $value): Filter
     {
         if ($value !== null) {
@@ -59,6 +88,14 @@ class Filter
         return $this;
     }
 
+    /**
+     * Add an ORDER BY clause to the query based on the specified columns and order direction.
+     *
+     * @param array $columns
+     * @param string|null $value
+     * @param string $order
+     * @return Filter
+     */
     public function orderBy(array $columns, ?string $value, string $order = 'desc'): Filter
     {
         if ($value) {

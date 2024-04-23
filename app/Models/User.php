@@ -63,4 +63,16 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function coaches()
+    {
+        return $this->belongsToMany(User::class, 'coach_user', 'user_id', 'coach_id')
+            ->select('users.id', 'users.name');
+    }
+        
+    public function trainees()
+    {
+        return $this->belongsToMany(User::class, 'coach_user', 'coach_id', 'user_id')
+            ->select('users.id', 'users.name');
+    }
 }

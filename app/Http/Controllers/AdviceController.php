@@ -47,7 +47,9 @@ class AdviceController extends Controller
      */
     public function getRandomAdvice()
     {
-        $randomAdvice = Advice::inRandomOrder()->select('title')->first();
+        $randomAdvice = Advice::inRandomOrder()
+            ->select('title')
+            ->first();
 
         return response()->json($randomAdvice);
     }

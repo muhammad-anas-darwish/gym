@@ -32,8 +32,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(20)->create(['is_coach' => false]);
-        User::factory(20)->create(['is_coach' => true]);
+        User::factory(20)->create(['user_role' => 'trainee']);
+        User::factory(20)->create(['user_role' => 'coach']);
 
         Muscle::factory(10)->create();
 

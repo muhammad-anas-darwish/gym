@@ -33,7 +33,6 @@ class UserFactory extends Factory
             'phone' => $this->faker->phoneNumber(),
             'birth_date' => $this->faker->date(),
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'is_admin' => false,
         ];
     }
 

@@ -26,7 +26,6 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        // store
         Category::create($data);
 
         return response()->json(['message' => 'Category added.'], 201);
@@ -39,7 +38,6 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        // update
         $category->update($data);
 
         return response()->json(['message' => 'Category updated.']);
@@ -50,7 +48,6 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // delete
         $category->delete();
 
         return response()->json(['message' => 'Records deleted'], 204);

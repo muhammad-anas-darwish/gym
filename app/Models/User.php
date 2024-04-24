@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,8 +32,7 @@ class User extends Authenticatable
         'phone',
         'birth_date',
         'gender',
-        'is_admin',
-        'is_coach',
+        'user_role',
     ];
 
     /**
@@ -53,6 +54,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'user_role' => UserRole::class,
     ];
 
     /**
@@ -69,7 +71,7 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'coach_user', 'user_id', 'coach_id')
             ->select('users.id', 'users.name');
     }
-        
+
     public function trainees()
     {
         return $this->belongsToMany(User::class, 'coach_user', 'coach_id', 'user_id')

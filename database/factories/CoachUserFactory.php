@@ -18,7 +18,7 @@ class CoachUserFactory extends Factory
     public function definition(): array
     {
         $userIds = User::pluck('id')->toArray();
-        $coachIds = User::where('is_coach', true)->pluck('id')->toArray();
+        $coachIds = User::where('user_role', 'coach')->pluck('id')->toArray();
 
         $userId = $this->faker->randomElement(array_diff($userIds, $coachIds));
         $coachId = $this->faker->randomElement($coachIds);

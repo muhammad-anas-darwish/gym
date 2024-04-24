@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,8 +24,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->date('birth_date');
             $table->string('gender');
-            $table->boolean('is_admin')->default(false);
-            $table->boolean('is_coach')->default(false);
+            $table->enum('user_role', array_column(UserRole::cases(), 'value'))->default(UserRole::TRAINEE->value);
+
             $table->timestamps();
         });
     }

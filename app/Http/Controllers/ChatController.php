@@ -20,7 +20,7 @@ class ChatController extends Controller
     {
         $userChat = UserChat::where('chat_id', $chatId)
             ->select('user_id')
-            ->with('user:id,name,profile_photo_path,is_admin,is_coach')
+            ->with('user:id,name,profile_photo_path,user_role')
             ->paginate(20)
             ->makeHidden(['user_id']);
 

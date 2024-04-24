@@ -18,7 +18,6 @@ class ArticleController extends Controller
     {
         $articles = Article::query();
 
-
         $filter = new Filter($articles);
         $filter->search([
             'title' => $request->query('q'),

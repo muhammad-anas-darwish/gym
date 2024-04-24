@@ -26,7 +26,7 @@ class StoreCoachUserRequest extends FormRequest
             'coach_id' => [
                 'required',
                 Rule::exists('users', 'id')->where(function ($query) {
-                    $query->where('is_coach', true);
+                    $query->where('user_role', 'coach');
                 }),
                 Rule::unique('coach_user')->where(function ($query) {
                     return $query->where('user_id', $this->user_id)
@@ -36,7 +36,7 @@ class StoreCoachUserRequest extends FormRequest
             'user_id' => [
                 'required',
                 Rule::exists('users', 'id')->where(function ($query) {
-                    $query->where('is_coach', false);
+                    $query->where('user_role', 'trainee');
                 }),
                 'different:coach_id'
             ],

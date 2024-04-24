@@ -49,7 +49,7 @@ class UserController extends Controller
     public function getCoaches()
     {
         $coaches = User::select('id', 'name', 'gender')
-            ->where('is_coach', true)
+            ->where('user_role', 'coach')
             ->withCount('trainees')
             ->get();
 

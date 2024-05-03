@@ -57,7 +57,6 @@ class ExerciseController extends Controller
         if ($request->hasFile('exercise_photo'))
             $data['exercise_photo_path'] = $request->file('exercise_photo')->store('/images/exercises', ['disk' => 'public']);
 
-        // update
         $exercise->update($data);
 
         return response()->json(['message' => 'Exercise updated.']);

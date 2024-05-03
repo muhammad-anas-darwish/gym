@@ -8,7 +8,8 @@ use App\Models\Advice;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Chat;
-use App\Models\CoachUser;
+use App\Models\Coach;
+use App\Models\CoachSpecialty;
 use App\Models\Exercise;
 use App\Models\Food;
 use App\Models\Meal;
@@ -17,6 +18,7 @@ use App\Models\Muscle;
 use App\Models\MuscleExercise;
 use App\Models\Package;
 use App\Models\Report;
+use App\Models\Specialty;
 use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\UserChat;
@@ -32,8 +34,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(20)->create(['user_role' => 'trainee']);
-        User::factory(20)->create(['user_role' => 'coach']);
+        Coach::factory(20)->create();
+
+        User::factory(20)->create(['user_role' => 'trainee'])->each(function ($trainee) {
+            $trainee->coaches()->attach(
+                Coach::inRandomOrder()->limit(rand(1, 3))->pluck('user_id')
+            );
+        });
 
         Muscle::factory(10)->create();
 
@@ -69,7 +76,8 @@ class DatabaseSeeder extends Seeder
 
         UserInformation::factory(30)->create();
 
-        CoachUser::factory(25)->create();
+        Specialty::factory(5)->create();
+        CoachSpecialty::factory(20)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

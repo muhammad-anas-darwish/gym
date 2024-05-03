@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -45,6 +47,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'pivot',
     ];
 
     /**
@@ -66,15 +69,20 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function coaches()
+    public function coaches(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'coach_user', 'user_id', 'coach_id')
+        return $this->belongsToMany(User::class, CoachTrainee::class, 'trainee_id', 'coach_id')
             ->select('users.id', 'users.name');
     }
 
-    public function trainees()
+    public function trainees(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'coach_user', 'coach_id', 'user_id')
+        return $this->belongsToMany(User::class, CoachTrainee::class, 'coach_id', 'trainee_id')
             ->select('users.id', 'users.name');
+    }
+
+    public function coach(): HasOne
+    {
+        return $this->hasOne(Coach::class);
     }
 }

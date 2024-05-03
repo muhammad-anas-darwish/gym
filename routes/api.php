@@ -4,7 +4,9 @@ use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\CoachUserController;
+use App\Http\Controllers\CoachController;
+use App\Http\Controllers\CoachSpecialtyController;
+use App\Http\Controllers\CoachTraineeController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MealController;
@@ -13,13 +15,13 @@ use App\Http\Controllers\MuscleController;
 use App\Http\Controllers\MuscleExerciseController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserExerciseController;
 use App\Http\Controllers\UserInformationController;
 use App\Http\Controllers\VideoController;
-use App\Models\CoachUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -69,13 +71,21 @@ Route::apiResource('user-information', UserInformationController::class)->only([
 Route::get('/user-information/{userId}', [UserInformationController::class, 'getUserInformationForCoach'])->name('user-information.getUserInformationForCoach')->whereNumber('userId');
 Route::get('/user-information', [UserInformationController::class, 'getUserInformationForUser'])->name('user-information.getUserInformationForUser');
 
+Route::get('/users/admins', [UserController::class, 'getAdmins'])->name('users.getAdmins');
+Route::get('/users/trainees', [UserController::class, 'getTrainees'])->name('users.getTrainees');
+Route::get('/users/trainees/{user}', [UserController::class, 'getTrainee'])->name('users.getTrainee');
 Route::get('/users/my-coaches', [UserController::class, 'getTraineeCoaches'])->name('users.getTraineeCoaches');
 Route::get('/users/get-trainee-coaches/{user}', [UserController::class, 'getTraineeCoachesById'])->name('users.getTraineeCoachesById');
 Route::get('/users/my-trainees', [UserController::class, 'getCoachTrainees'])->name('users.getCoachTrainees');
 Route::get('/users/get-coach-trainees/{user}', [UserController::class, 'getCoachTraineesById'])->name('users.getCoachTraineesById');
-
-Route::apiResource('coach-user', CoachUserController::class)->only(['store']);
-Route::delete('coach-user', [CoachUserController::class, 'destroyCoachUser'])->name('coach-user.destroy');
-
-Route::get('/users/coaches', [UserController::class, 'getCoaches'])->name('users.getCoaches');
 Route::get('/users/coachless-trainees', [UserController::class, 'getCoachlessTrainees'])->name('users.getCoachlessTrainees');
+Route::put('/users/promote-to-admin', [UserController::class, 'promoteToAdmin'])->name('users.promoteToAdmin');
+
+Route::apiResource('coach-trainee', CoachTraineeController::class)->only(['store']);
+Route::delete('coach-trainee/trainee/{trainee}/coach/{coach}', [CoachTraineeController::class, 'destroyCoachTrainee'])->name('coach-trainee.destroy');
+
+Route::apiResource('specialties', SpecialtyController::class)->only(['index', 'store', 'update', 'destroy']);
+
+Route::apiResource('coach-specialty', CoachSpecialtyController::class)->only(['store', 'destroy']);
+
+Route::apiResource('coaches', CoachController::class)->only(['index', 'store', 'show', 'update']);

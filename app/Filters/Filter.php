@@ -19,14 +19,38 @@ class Filter
      * @param array $rules
      * @return Filter
      */
-    public function search(array $rules): Filter
+    // public function search(array $rules): Filter
+    // {
+    //     if ($rules[key($rules)]) {
+    //         $this->query->where(function($query) use ($rules) {
+    //             $query->where(key($rules), 'LIKE', '%' . $rules[key($rules)] . '%');
+    //             $rules = array_slice($rules, 1);
+    //             foreach ($rules as $key => $value) {
+    //                 $query->orWhere($key, 'LIKE', '%' . $value . '%');
+    //             }
+    //         });
+    //     }
+
+    //     return $this;
+    // }
+
+    /**
+     * Search for records based on the provided rules.
+     *
+     * @param array $rules
+     * @param string $conditionType
+     * @return Filter
+     */
+    public function search(array $rules, string $conditionType = 'orWhere'): Filter
     {
-        if ($rules[key($rules)]) {
-            $this->query->where(function($query) use ($rules) {
-                $query->where(key($rules), 'LIKE', '%' . $rules[key($rules)] . '%');
-                $rules = array_slice($rules, 1);
-                foreach ($rules as $key => $value) {
-                    $query->orWhere($key, 'LIKE', '%' . $value . '%');
+        $filteredRules = array_filter($rules, function ($value) {
+            return !is_null($value);
+        });
+
+        if (!empty($filteredRules)) {
+            $this->query->where(function($query) use ($filteredRules, $conditionType) {
+                foreach ($filteredRules as $key => $value) {
+                    $query->{$conditionType}($key, 'LIKE', '%' . $value . '%');
                 }
             });
         }

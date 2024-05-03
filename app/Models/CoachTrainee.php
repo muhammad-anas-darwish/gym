@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CoachUser extends Model
+class CoachTrainee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['coach_id', 'user_id'];
-    protected $table = 'coach_user';
+    protected $fillable = ['coach_id', 'trainee_id'];
+    protected $table = 'coach_trainee';
 
-    public function coach()
+    public function coach(): BelongsTo
     {
         return $this->belongsTo(User::class, 'coach_id');
     }
 
-    public function user()
+    public function trainee(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'trainee_id');
     }
 }

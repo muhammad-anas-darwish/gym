@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coach_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('coach_id');
-            $table->unsignedBigInteger('user_id');
-            $table->timestamps();
-
-            $table->foreign('coach_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::create('coaches', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBiginteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->primary(['coach_id', 'user_id']);
+            $table->text('description')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coach_user');
+        Schema::dropIfExists('coaches');
     }
 };

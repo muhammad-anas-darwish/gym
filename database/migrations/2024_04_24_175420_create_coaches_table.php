@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('coaches', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBiginteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
             $table->text('description')->nullable();
             $table->timestamps();
         });

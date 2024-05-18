@@ -14,15 +14,10 @@ return new class extends Migration
         Schema::create('user_exercises', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBiginteger('user_id');
-            $table->unsignedBiginteger('muscle_id');
-            $table->unsignedBiginteger('exercise_id');
-            $table->unsignedBiginteger('training_session_id');
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('muscle_id')->references('id')->on('muscles')->onDelete('cascade');
-            $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
-            $table->foreign('training_session_id')->references('id')->on('training_sessions')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
+            $table->foreignId('muscle_id')->constrained(table: 'muscles')->cascadeOnDelete();
+            $table->foreignId('exercise_id')->constrained(table: 'exercises')->cascadeOnDelete();
+            $table->foreignId('training_session_id')->constrained(table: 'training_sessions')->cascadeOnDelete();
 
             $table->smallInteger('sets')->default(3);
             $table->string('reps');

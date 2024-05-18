@@ -13,12 +13,8 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBiginteger('user_id');
-            $table->unsignedBiginteger('category_id');
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained(table: 'categories')->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('article_photo_path', 2048)->nullable();

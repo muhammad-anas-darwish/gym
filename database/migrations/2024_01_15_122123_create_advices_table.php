@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('advices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBiginteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained(table: 'categories')->cascadeOnDelete();
             $table->string('title');
         });
     }

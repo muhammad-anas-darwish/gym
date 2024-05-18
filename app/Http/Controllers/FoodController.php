@@ -27,7 +27,7 @@ class FoodController extends Controller
         // store
         Food::create($data);
 
-        return response()->json(['message', 'Food added.'], 201);
+        return response()->json(['message' => 'Food added.'], 201);
     }
 
     /**

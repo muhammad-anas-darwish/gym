@@ -30,7 +30,7 @@ class MealController extends Controller
     }
 
     /**
-     * Display a listing of the foods.
+     * Display a listing of the foods with mealId.
      */
     public function getFoods(Meal $meal)
     {

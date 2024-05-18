@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('muscle_exercise', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBiginteger('muscle_id');
-            $table->unsignedBiginteger('exercise_id');
-
-            $table->foreign('muscle_id')->references('id')->on('muscles')->onDelete('cascade');
-            $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
+            $table->foreignId('muscle_id')->constrained(table: 'muscles')->cascadeOnDelete();
+            $table->foreignId('exercise_id')->constrained(table: 'exercises')->cascadeOnDelete();
 
             $table->unique(['muscle_id', 'exercise_id']);
         });

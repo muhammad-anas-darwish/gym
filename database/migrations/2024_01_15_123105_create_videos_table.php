@@ -13,10 +13,7 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBiginteger('user_id');
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
             $table->string('title');
             $table->text('description');
             $table->string('thumbnail_photo_path', 2048)->nullable();

@@ -10,4 +10,9 @@ class Meal extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'name', 'day'];
+
+    public function foods()
+    {
+        return $this->hasMany(MealFood::class);
+    }
 }

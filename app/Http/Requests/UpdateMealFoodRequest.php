@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\MealFood;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMealFoodRequest extends FormRequest
 {
@@ -24,7 +26,18 @@ class UpdateMealFoodRequest extends FormRequest
         return [
             'food_id' => ['exists:foods,id'],
             'meal_id' => ['exists:meals,id'],
-            'amount' => ['string', 'max:64'],
+            'amount' => ['filled', 'string', 'max:64'],
+            'meal_id' => Rule::unique(MealFood::class)->where(function ($query) {
+                return $query->where('food_id', $this->food_id)
+                    ->where('meal_id', $this->meal_id);
+            }),
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'meal_id.unique' => 'This combination of food and meal already exists.',
         ];
     }
 }

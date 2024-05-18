@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Meal;
 use App\Http\Requests\StoreMealRequest;
 use App\Http\Requests\UpdateMealRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class MealController extends Controller
@@ -28,6 +27,29 @@ class MealController extends Controller
         $meals = Meal::where('user_id', $userId)->get(['id', 'name', 'day']);
 
         return response()->json($meals);
+    }
+
+    /**
+     * Display a listing of the foods.
+     */
+    public function getFoods(Meal $meal)
+    {
+        $meal = $meal->load(['foods', 'foods.food']);
+        $mealData = $meal->toArray();
+
+        $mealData['foods'] = $meal->foods->map(function ($food) {
+            return [
+                'id' => $food->id, // meal_food Id
+                'amount' => $food->amount,
+                'created_at' => $food->created_at,
+                'updated_at' => $food->updated_at,
+                'food_id' => $food->food->id,
+                'name' => $food->food->name,
+                'description' => $food->food->description,
+            ];
+        });
+
+        return response()->json($mealData);
     }
 
     /**

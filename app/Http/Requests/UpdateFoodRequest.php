@@ -22,8 +22,8 @@ class UpdateFoodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:64'],
-            'description' => ['string'],
+            'name' => ['filled', 'string', 'max:64', 'unique:foods'],
+            'description' => ['string', 'nullable'],
         ];
     }
 }

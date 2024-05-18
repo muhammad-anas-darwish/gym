@@ -10,6 +10,7 @@ class MealFood extends Model
 {
     use HasFactory;
 
+    public $table = 'meal_food';
     protected $fillable = ['food_id', 'meal_id', 'amount'];
     protected $hidden = ['food_id', 'meal_id',];
 

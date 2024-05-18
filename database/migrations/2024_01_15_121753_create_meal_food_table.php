@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('meal_food', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBiginteger('food_id');
-            $table->unsignedBiginteger('meal_id');
-
-            $table->foreign('food_id')->references('id')->on('foods')->onDelete('cascade');
-            $table->foreign('meal_id')->references('id')->on('meals')->onDelete('cascade');
-            $table->string('amount');
+            $table->foreignId('food_id')->constrained(table: 'foods')->cascadeOnDelete();
+            $table->foreignId('meal_id')->constrained(table: 'meals')->cascadeOnDelete();
+            $table->string('amount', "64");
 
             $table->unique(['food_id', 'meal_id']);
 

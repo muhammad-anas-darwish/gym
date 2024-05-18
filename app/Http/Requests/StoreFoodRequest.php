@@ -22,8 +22,8 @@ class StoreFoodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:64'],
-            'description' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:64', 'unique:foods'],
+            'description' => ['string', 'max:255'],
         ];
     }
 }

@@ -56,9 +56,9 @@ Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 
 Route::apiResource('articles', ArticleController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('meals', MealController::class)->only(['store', 'update', 'destroy']);
 Route::get('/meals/my', [MealController::class, 'getUserMeals'])->name('meals.getUserMeals');
-Route::get('/meals/{userId}', [MealController::class, 'getMealsOfUser'])->name('meals.getMealOfUser')->whereNumber('userId');
+Route::get('/meals/user/{userId}', [MealController::class, 'getMealsOfUser'])->name('meals.getMealOfUser')->whereNumber('userId');
+Route::get('/meals/{meal}', [MealController::class, 'getFoods'])->name('meals.getFoods');
 Route::apiResource('meal-food', MealFoodController::class)->only(['store', 'update', 'destroy']);
-Route::get('/meal-food/{mealId}', [MealFoodController::class, 'getFoods'])->name('meals.getFoods')->whereNumber('mealId');
 Route::apiResource('videos', VideoController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('user-exercise', UserExerciseController::class)->only(['store', 'update', 'destroy']);
 Route::get('/user-exercise/my', [UserExerciseController::class, 'getExercises'])->name('user-exercise.getExercises');

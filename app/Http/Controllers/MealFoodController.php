@@ -9,19 +9,6 @@ use App\Http\Requests\UpdateMealFoodRequest;
 class MealFoodController extends Controller
 {
     /**
-     * Display a listing of the meal food.
-     */
-    public function getFoods(int $mealId)
-    {
-        $mealFood = MealFood::where('meal_id', $mealId)
-            ->with('meal:id,name,day', 'food:id,name')
-            ->select('id', 'meal_id', 'food_id', 'amount')
-            ->get();
-
-        return response()->json($mealFood);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreMealFoodRequest $request)

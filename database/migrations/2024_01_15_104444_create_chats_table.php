@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->string('title', 64)->nullable();
             $table->boolean('is_private')->default(true);
             $table->string('chat_photo_path', 2048)->nullable();
-            $table->string('description')->nullable();
+            $table->tinyText('description')->nullable();
             $table->timestamps();
         });
     }

@@ -29,7 +29,7 @@ class StoreUserExerciseRequest extends FormRequest
             'sets' => ['required', 'integer', 'between:1,128'],
             'reps' => ['required', 'string', 'max:128'],
             'order' => ['required', 'integer', 'between:-32,64'],
-            'note' => ['nullable', 'string'],
+            'note' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('training_sessions', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title')->unique();
+            $table->string('title', 64)->unique();
         });
     }
 

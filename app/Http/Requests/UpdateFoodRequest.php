@@ -23,7 +23,7 @@ class UpdateFoodRequest extends FormRequest
     {
         return [
             'name' => ['filled', 'string', 'max:64', 'unique:foods'],
-            'description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

@@ -23,7 +23,7 @@ class StoreGroupRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:64'],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'string', 'max:512'],
             'group_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }

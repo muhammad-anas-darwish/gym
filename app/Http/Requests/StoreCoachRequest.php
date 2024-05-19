@@ -24,7 +24,7 @@ class StoreCoachRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'exists:users,id', new ValidTrainee],
-            'description' => ['string', 'max:256'],
+            'description' => ['nullable', 'string', 'max:256'],
         ];
     }
 }

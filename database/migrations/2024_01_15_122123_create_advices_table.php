@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('advices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained(table: 'categories')->cascadeOnDelete();
-            $table->string('title');
+            $table->string('title', 128);
         });
     }
 

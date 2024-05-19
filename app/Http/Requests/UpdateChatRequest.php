@@ -23,7 +23,7 @@ class UpdateChatRequest extends FormRequest
     {
         return [
             'title' => ['filled', 'string', 'min:1', 'max:64'],
-            'description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string', 'max:512'],
             'group_photo' => ['sometimes', 'image', 'size:1024'],
         ];
     }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
-            $table->string('title');
+            $table->string('title', 128);
             $table->text('description');
             $table->boolean('is_read')->default(false);
 

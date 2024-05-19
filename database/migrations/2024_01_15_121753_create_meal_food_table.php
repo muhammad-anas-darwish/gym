@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignId('food_id')->constrained(table: 'foods')->cascadeOnDelete();
             $table->foreignId('meal_id')->constrained(table: 'meals')->cascadeOnDelete();
-            $table->string('amount', "64");
+            $table->string('amount', 64);
 
             $table->unique(['food_id', 'meal_id']);
 

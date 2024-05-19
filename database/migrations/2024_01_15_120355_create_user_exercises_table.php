@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('training_session_id')->constrained(table: 'training_sessions')->cascadeOnDelete();
 
             $table->smallInteger('sets')->default(3);
-            $table->string('reps');
+            $table->string('reps', 128);
             $table->smallInteger('order')->nullable();
             $table->string('note')->nullable();
 

@@ -24,7 +24,7 @@ class UpdateArticleRequest extends FormRequest
         return [
             'category_id' => ['sometimes', 'exists:categories,id'],
             'title' => ['filled', 'string', 'max:64'],
-            'description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string', 'max:10000'],
             'article_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }

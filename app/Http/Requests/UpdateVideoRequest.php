@@ -23,7 +23,7 @@ class UpdateVideoRequest extends FormRequest
     {
         return [
             'title' => ['filled', 'string', 'max:64'],
-            'description' => ['filled', 'string'],
+            'description' => ['filled', 'string', 'max:1024'],
             'thumbnail_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
             'video' => ['sometimes', 'file', 'mimes:mp4,avi,mov,wmv'],
         ];

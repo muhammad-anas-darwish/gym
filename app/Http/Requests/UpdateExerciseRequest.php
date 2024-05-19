@@ -23,7 +23,7 @@ class UpdateExerciseRequest extends FormRequest
     {
         return [
             'name' => ['filled', 'string', 'max:64'],
-            'description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string', 'max:512'],
             'exercise_photo' => ['sometimes', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }

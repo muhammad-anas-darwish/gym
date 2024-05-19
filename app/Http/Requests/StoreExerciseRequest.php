@@ -23,7 +23,7 @@ class StoreExerciseRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:64'],
-            'description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string', 'max:512'],
             'exercise_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }

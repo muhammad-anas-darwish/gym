@@ -28,7 +28,7 @@ class UpdateUserExerciseRequest extends FormRequest
             'sets' => ['filled', 'integer', 'between:1,128'],
             'reps' => ['filled', 'string', 'max:128'],
             'order' => ['filled', 'integer', 'between:-32,64'],
-            'note' => ['nullable', 'string'],
+            'note' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

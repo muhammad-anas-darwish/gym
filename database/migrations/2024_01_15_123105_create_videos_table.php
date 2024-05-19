@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
-            $table->string('title');
+            $table->string('title', 64);
             $table->text('description');
             $table->string('thumbnail_photo_path', 2048)->nullable();
             $table->string('video_path');

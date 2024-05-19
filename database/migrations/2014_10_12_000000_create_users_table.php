@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('phone')->nullable();
             $table->date('birth_date');
-            $table->string('gender');
+            $table->enum('gender', ['male', 'female']);
             $table->enum('user_role', array_column(UserRole::cases(), 'value'))->default(UserRole::TRAINEE->value);
 
             $table->timestamps();

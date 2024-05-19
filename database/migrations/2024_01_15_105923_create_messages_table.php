@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBiginteger('user_id');
-            $table->unsignedBiginteger('chat_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('chat_id')->references('id')->on('chats')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained(table: 'users')->cascadeOnDelete();
+            $table->foreignId('chat_id')->constrained(table: 'chats')->cascadeOnDelete();
             $table->text('text');
             $table->string('message_photo_path', 2048)->nullable();
             $table->timestamps();

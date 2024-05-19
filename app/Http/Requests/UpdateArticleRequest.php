@@ -22,10 +22,10 @@ class UpdateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['exists:categories,id'],
-            'title' => ['string', 'max:64'],
-            'description' => ['string'],
-            'article_photo' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'category_id' => ['sometimes', 'exists:categories,id'],
+            'title' => ['filled', 'string', 'max:64'],
+            'description' => ['nullable', 'string'],
+            'article_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }
 }

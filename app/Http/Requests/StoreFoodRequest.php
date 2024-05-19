@@ -23,7 +23,7 @@ class StoreFoodRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:64', 'unique:foods'],
-            'description' => ['string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

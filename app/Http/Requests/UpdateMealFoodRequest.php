@@ -24,8 +24,8 @@ class UpdateMealFoodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'food_id' => ['exists:foods,id'],
-            'meal_id' => ['exists:meals,id'],
+            'food_id' => ['sometimes', 'exists:foods,id'],
+            'meal_id' => ['sometimes', 'exists:meals,id'],
             'amount' => ['filled', 'string', 'max:64'],
             'meal_id' => Rule::unique(MealFood::class)->where(function ($query) {
                 return $query->where('food_id', $this->food_id)

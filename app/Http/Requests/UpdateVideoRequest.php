@@ -22,10 +22,10 @@ class UpdateVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', 'max:64'],
-            'description' => ['string'],
-            'thumbnail_photo' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
-            'video' => ['file', 'mimes:mp4,avi,mov,wmv'],
+            'title' => ['filled', 'string', 'max:64'],
+            'description' => ['filled', 'string'],
+            'thumbnail_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
+            'video' => ['sometimes', 'file', 'mimes:mp4,avi,mov,wmv'],
         ];
     }
 }

@@ -22,13 +22,13 @@ class UpdateUserExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'muscle_id' => ['exists:muscles,id'],
-            'exercise_id' => ['exists:exercises,id'],
-            'training_session_id' => ['exists:training_sessions,id'],
-            'sets' => ['between:1,128'],
-            'reps' => ['string', 'max:128'],
-            'order' => ['between:-32,64'],
-            'note' => ['string'],
+            'muscle_id' => ['filled', 'exists:muscles,id'],
+            'exercise_id' => ['filled', 'exists:exercises,id'],
+            'training_session_id' => ['filled', 'exists:training_sessions,id'],
+            'sets' => ['filled', 'integer', 'between:1,128'],
+            'reps' => ['filled', 'string', 'max:128'],
+            'order' => ['filled', 'integer', 'between:-32,64'],
+            'note' => ['nullable', 'string'],
         ];
     }
 }

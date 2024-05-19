@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
             $table->string('name', 64);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('exercise_photo_path', 2048)->nullable();
         });
     }

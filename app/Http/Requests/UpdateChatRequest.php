@@ -22,9 +22,9 @@ class UpdateChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', 'min:1', 'max:64'],
-            'description' => ['string'],
-            'group_photo' => ['image', 'size:1024'],
+            'title' => ['filled', 'string', 'min:1', 'max:64'],
+            'description' => ['nullable', 'string'],
+            'group_photo' => ['sometimes', 'image', 'size:1024'],
         ];
     }
 }

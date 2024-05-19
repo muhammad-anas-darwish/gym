@@ -22,7 +22,7 @@ class UpdateCoachRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['string', 'max:256'],
+            'description' => ['nullable', 'string', 'max:256'],
         ];
     }
 }

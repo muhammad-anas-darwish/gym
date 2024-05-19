@@ -22,9 +22,9 @@ class UpdateExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:64'],
-            'description' => ['string'],
-            'exercise_photo' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'name' => ['filled', 'string', 'max:64'],
+            'description' => ['nullable', 'string'],
+            'exercise_photo' => ['sometimes', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }
 }

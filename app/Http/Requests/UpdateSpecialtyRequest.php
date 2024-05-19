@@ -23,7 +23,7 @@ class UpdateSpecialtyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'min:1', 'max:128'],
+            'name' => ['filled', 'string', 'min:1', 'max:128'],
         ];
     }
 }

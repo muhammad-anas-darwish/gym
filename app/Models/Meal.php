@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Meal extends Model
 {
@@ -11,8 +12,13 @@ class Meal extends Model
 
     protected $fillable = ['user_id', 'name', 'day'];
 
-    public function foods()
+    public function coaches(): BelongsToMany
     {
-        return $this->hasMany(MealFood::class);
+        return $this->belongsToMany(Coach::class, CoachSpecialty::class);
+    }
+
+    public function foods(): BelongsToMany
+    {
+        return $this->belongsToMany(Food::class, MealFood::class);
     }
 }

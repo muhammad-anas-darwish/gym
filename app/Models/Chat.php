@@ -12,6 +12,6 @@ class Chat extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_chat');
+        return $this->belongsToMany(User::class, UserChat::class)->withTimestamps();
     }
 }

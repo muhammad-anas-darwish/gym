@@ -17,9 +17,6 @@ class ChatFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->name(),
-            'description' => $this->faker->text(),
-            'is_private' => $this->faker->boolean(),
         ];
     }
 }

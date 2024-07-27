@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ChatType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreGroupRequest extends FormRequest
 {
-    /**
+    /**`x
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -22,9 +24,11 @@ class StoreGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:64'],
-            'description' => ['required', 'string', 'max:512'],
+            'name' => ['required', 'string', 'max:128'],
+            'description' => ['nullable', 'string', 'max:512'],
             'group_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'is_private' => ['required', 'boolean'],
+            'chat_type' => ['required', Rule::enum(ChatType::class)],
         ];
     }
 }

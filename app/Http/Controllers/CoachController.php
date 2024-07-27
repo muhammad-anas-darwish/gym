@@ -35,7 +35,7 @@ class CoachController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Promote the trainee to coach.
      */
     public function store(StoreCoachRequest $request)
     {

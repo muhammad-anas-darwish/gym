@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\Filter;
+use App\Exceptions\CustomException;
 use App\Models\Chat;
 use App\Models\UserChat;
-use App\Http\Requests\StoreChatRequest;
-use App\Http\Requests\StoreGroupRequest;
-use App\Http\Requests\UpdateChatRequest;
+use App\Services\ChatServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use League\Config\Exception\ValidationException;
 
 class ChatController extends Controller
 {
+    public function __construct(private readonly ChatServiceInterface $chatService) 
+    {
+    }
+
     /**
      * Display a listing of the chat members
      */
     function getMembers(int $chatId)
     {
         $userChat = UserChat::where('chat_id', $chatId)
-            ->select('user_id')
-            ->with('user:id,name,profile_photo_path,user_role')
+            ->select('id', 'user_id', 'role')
+            ->with('user:id,name,user_role')
             ->paginate(20)
             ->makeHidden(['user_id']);
 
@@ -28,13 +31,12 @@ class ChatController extends Controller
     }
 
     /**
-     * Display a listing of the chat members
+     * Show all groups to which the user belongs
      */
     function getUserChats()
     {
-        $chats = Chat::whereHas('users', function ($query) {
-            $query->where('user_id', Auth::id());
-        })->get(['id', 'title', 'is_private', 'chat_photo_path', 'created_at']);
+        // TODO : Change user id (1) to Auth::id()
+        $chats = $this->chatService->getUserChats(1);
 
         return response()->json($chats);
     }
@@ -43,47 +45,17 @@ class ChatController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $chats = Chat::query();
-
-        $filter = new Filter($chats);
-        $filter->search(['title' => $request->query('q')])
-            ->where('is_private', $request->query('is_private'));
-
-        $chats = $chats->select(['id', 'title', 'chat_photo_path', 'is_private'])->paginate(20);
+    {   
+        $chats = Chat::filter(function ($filter) use ($request) {
+            $filter->searchHas('group', 'name', $request->query('q'))
+            ->where('is_direct', $request->query('is_direct'))
+            ->whereHas('group', 'is_private', $request->query('is_private'));
+        });
+        
+        $chats = $chats->with('group:id,chat_id,name,slug,is_private,chat_photo_path');
+        $chats = $chats->select(['id', 'is_direct'])->paginate(20);
 
         return response()->json($chats);
-    }
-
-    /**
-     * Store a newly created resource in storage (private chat).
-     */
-    public function storePrivateChat(StoreChatRequest $request)
-    {
-        $data = $request->validated();
-
-        $chat = Chat::create(['is_private' => true]);
-
-        // add users to chat
-        UserChat::create(['user_id' => $data['user1_id'], 'chat_id' => $chat['id']]);
-        UserChat::create(['user_id' => $data['user2_id'], 'chat_id' => $chat['id']]);
-
-        return response()->json(['message' => 'Chat added.'], 201);
-    }
-
-    /**
-     * Store a newly created resource in storage (public chat).
-     */
-    public function storeGroup(StoreGroupRequest $request)
-    {
-        $data = $request->validated();
-        $data['is_private'] = false;
-        if ($request->hasFile('group_photo'))
-            $data['chat_photo_path'] = $request->file('group_photo')->store('/images/chats', ['disk' => 'public']);
-
-        Chat::create($data);
-
-        return response()->json(['message' => 'Group added.'], 201);
     }
 
     /**
@@ -91,34 +63,38 @@ class ChatController extends Controller
      */
     public function show(Chat $chat)
     {
-        return response()->json($chat);
+        $data = [
+            'chat_id' => $chat->id,
+            'is_direct' => $chat->is_direct,
+        ];
+        if ($chat->is_direct) {
+            $chat->load('users:name');
+            $data['name'] = "{$chat->users[0]->name} & {$chat->users[1]->name}";
+        }
+        else {
+            $chat->load('group:chat_id,name,is_private');
+            $data['name'] = "{$chat->group->name}";
+        }
+        return response()->json($data);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateChatRequest $request, Chat $chat)
+    
+    public function getChat(Chat $chat)
     {
-        $data = $request->validated();
+        $userIsExist = $chat->users()->where('user_id', Auth::id())->exists();
 
-        if(!$chat['is_private']) {
-            if ($request->hasFile('chat_photo'))
-                $data['chat_photo_path'] = $request->file('chat_photo')->store('/images/chats', ['disk' => 'public']);
-
-            $chat->update($data);
+        if ($chat->is_direct) { // return other user if chat is direct
+            $chat->load(['users' => function($query) {
+                $query->where('user_id', '!=', Auth::id())->select('name', 'username');
+            }]);
+        }
+        else {
+            $chat->load('group');
+        }
+        
+        if (!$userIsExist && ($chat->is_direct || $chat->group->is_private)) {
+            throw new CustomException('You do not have permissions to access this chat.', 403);
         }
 
-        return response()->json(['message' => 'Chat updated.']);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Chat $chat)
-    {
-        if(!$chat['is_private'])
-            $chat->delete();
-
-        return response()->json(['message' => 'Records deleted.'], 204);
+        return response()->json($chat);
     }
 }

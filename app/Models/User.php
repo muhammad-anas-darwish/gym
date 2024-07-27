@@ -29,6 +29,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'phone',
@@ -84,5 +85,10 @@ class User extends Authenticatable
     public function coach(): HasOne
     {
         return $this->hasOne(Coach::class);
+    }
+
+    public function chats(): BelongsToMany
+    {
+        return $this->belongsToMany(Chat::class, UserChat::class);
     }
 }

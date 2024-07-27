@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Enums\UserChatRole;
 use App\Models\Advice;
 use App\Models\Article;
 use App\Models\Category;
@@ -11,6 +12,7 @@ use App\Models\Chat;
 use App\Models\Coach;
 use App\Models\Exercise;
 use App\Models\Food;
+use App\Models\Group;
 use App\Models\Meal;
 use App\Models\Muscle;
 use App\Models\Package;
@@ -52,9 +54,19 @@ class DatabaseSeeder extends Seeder
 
         Package::factory(3)->create();
 
-        Chat::factory(20)->create()->each(function ($chat) {
+        // Chat::factory(20)->create()->each(function ($chat) {
+        //     $chat->users()->attach(
+        //         User::inRandomOrder()->limit(rand(3,10))->pluck('id')
+        //     );
+        // });
+        
+        Group::factory(20)->create();
+
+        Chat::factory(40)->create([
+            'is_direct' => true,
+        ])->each(function ($chat) {
             $chat->users()->attach(
-                User::inRandomOrder()->limit(rand(3,10))->pluck('id')
+                User::inRandomOrder()->limit(2)->pluck('id'), 
             );
         });
 

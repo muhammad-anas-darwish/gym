@@ -9,6 +9,7 @@ use App\Http\Controllers\CoachSpecialtyController;
 use App\Http\Controllers\CoachTraineeController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\MealFoodController;
 use App\Http\Controllers\MuscleController;
@@ -47,9 +48,8 @@ Route::apiResource('categories', CategoryController::class)->only(['index', 'sto
 Route::apiResource('packages', PackageController::class)->only(['index', 'store', 'show','update', 'destroy']);
 Route::get('/chats/members/{chatId}', [ChatController::class, 'getMembers'])->name('chats.getMembers')->whereNumber('chatId');
 Route::get('/chats/get-user-chats', [ChatController::class, 'getUserChats'])->name('chats.getUserChats');
-Route::post('/chats/private', [ChatController::class, 'storePrivateChat'])->name('chats.storePrivateChat');
-Route::apiResource('chats', ChatController::class)->only(['index', 'show','update', 'destroy']);
-Route::post('/groups', [ChatController::class, 'storeGroup'])->name('chats.storeGroup');
+Route::apiResource('chats', ChatController::class)->only(['index', 'show']);
+Route::get('/chats/show/{chat}', [ChatController::class, 'getChat'])->name('chats.getChat');
 Route::apiResource('muscle-exercise', MuscleExerciseController::class)->only(['store', 'destroy']);
 Route::get('/advices/get-random/', [AdviceController::class, 'getRandomAdvice'])->name('advices.getRandomAdvice');
 Route::apiResource('advices', AdviceController::class)->only(['index', 'store', 'update', 'destroy']);
@@ -74,7 +74,9 @@ Route::get('/user-information', [UserInformationController::class, 'getUserInfor
 Route::get('/users/admins', [UserController::class, 'getAdmins'])->name('users.getAdmins');
 Route::get('/users/trainees', [UserController::class, 'getTrainees'])->name('users.getTrainees');
 Route::get('/users/trainees/{user}', [UserController::class, 'getTrainee'])->name('users.getTrainee');
-Route::get('/users/my-coaches', [UserController::class, 'getTraineeCoaches'])->name('users.getTraineeCoaches');
+Route::get('/users/my/coaches', [UserController::class, 'getMyCoaches'])->name('users.getMyCoaches');
+Route::get('/users/{user}/coaches', [UserController::class, 'getTraineeCoaches'])->name('users.getTraineeCoaches');
+
 Route::get('/users/get-trainee-coaches/{user}', [UserController::class, 'getTraineeCoachesById'])->name('users.getTraineeCoachesById');
 Route::get('/users/my-trainees', [UserController::class, 'getCoachTrainees'])->name('users.getCoachTrainees');
 Route::get('/users/get-coach-trainees/{user}', [UserController::class, 'getCoachTraineesById'])->name('users.getCoachTraineesById');
@@ -89,3 +91,9 @@ Route::apiResource('specialties', SpecialtyController::class)->only(['index', 's
 Route::apiResource('coach-specialty', CoachSpecialtyController::class)->only(['store', 'destroy']);
 
 Route::apiResource('coaches', CoachController::class)->only(['index', 'store', 'show', 'update']);
+
+Route::get('/groups/get-public-groups', [GroupController::class, 'getPublicGroups'])->name('groups.getPublicGroups');
+Route::post('/groups', [GroupController::class, 'createGroup'])->name('groups.createGroup');
+Route::post('/groups/add-members', [GroupController::class, 'addMembers'])->name('groups.addMembers');
+Route::post('/groups/join', [GroupController::class, 'joinGroup'])->name('groups.joinGroup');
+Route::apiResource('groups', GroupController::class)->only(['update', 'destroy']);

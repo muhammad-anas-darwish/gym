@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateChatRequest extends FormRequest
+class UpdateGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,10 @@ class UpdateChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['filled', 'string', 'min:1', 'max:64'],
+            'name' => ['sometimes', 'string', 'max:128'],
+            'slug' => ['sometimes', 'string', 'max:250', 'unique:groups,slug,' . $this->route('group')->id],
             'description' => ['nullable', 'string', 'max:512'],
-            'group_photo' => ['sometimes', 'image', 'size:1024'],
+            'group_photo' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }
 }

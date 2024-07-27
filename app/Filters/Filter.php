@@ -6,33 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Filter
 {
-    protected Builder $query;
-
-    public function __construct(Builder $query)
-    {
-        $this->query = $query;
-    }
-
-    /**
-     * Search for records based on the provided rules.
-     *
-     * @param array $rules
-     * @return Filter
-     */
-    // public function search(array $rules): Filter
-    // {
-    //     if ($rules[key($rules)]) {
-    //         $this->query->where(function($query) use ($rules) {
-    //             $query->where(key($rules), 'LIKE', '%' . $rules[key($rules)] . '%');
-    //             $rules = array_slice($rules, 1);
-    //             foreach ($rules as $key => $value) {
-    //                 $query->orWhere($key, 'LIKE', '%' . $value . '%');
-    //             }
-    //         });
-    //     }
-
-    //     return $this;
-    // }
+    public function __construct(protected Builder $query)
+    { }
 
     /**
      * Search for records based on the provided rules.
@@ -63,14 +38,14 @@ class Filter
      *
      * @param string $relationshipName
      * @param string $fieldName
-     * @param int|null $id
+     * @param mixed $value
      * @return Filter
      */
-    public function whereHas(string $relationshipName, string $fieldName, ?int $id): Filter
+    public function whereHas(string $relationshipName, string $fieldName, mixed $value): Filter
     {
-        if ($id) {
-            $this->query->whereHas($relationshipName, function ($query) use ($fieldName, $id) {
-                $query->where($fieldName, $id);
+        if (!is_null($value)) {
+            $this->query->whereHas($relationshipName, function ($query) use ($fieldName, $value) {
+                $query->where($fieldName, $value);
             });
         }
 

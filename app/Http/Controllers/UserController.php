@@ -83,9 +83,19 @@ class UserController extends Controller
     /**
      * get all coaches for the trainee user
      */
-    public function getTraineeCoaches()
+    public function getMyCoaches()
     {
-        $coaches = User::find(Auth::id())->coaches;
+        $coaches = Auth::user()->coaches;
+
+        return response()->json($coaches);
+    }
+
+    /**
+     * get all coaches for the trainee user
+     */
+    public function getTraineeCoaches(User $user)
+    {
+        $coaches = $user->coaches;
 
         return response()->json($coaches);
     }

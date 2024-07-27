@@ -48,6 +48,7 @@ Route::apiResource('categories', CategoryController::class)->only(['index', 'sto
 Route::apiResource('packages', PackageController::class)->only(['index', 'store', 'show','update', 'destroy']);
 Route::get('/chats/members/{chatId}', [ChatController::class, 'getMembers'])->name('chats.getMembers')->whereNumber('chatId');
 Route::get('/chats/get-user-chats', [ChatController::class, 'getUserChats'])->name('chats.getUserChats');
+Route::delete('/chats/{chat}', [ChatController::class, 'deleteGroup'])->name('chats.deleteGroup');
 Route::apiResource('chats', ChatController::class)->only(['index', 'show']);
 Route::get('/chats/show/{chat}', [ChatController::class, 'getChat'])->name('chats.getChat');
 Route::apiResource('muscle-exercise', MuscleExerciseController::class)->only(['store', 'destroy']);
@@ -96,4 +97,4 @@ Route::get('/groups/get-public-groups', [GroupController::class, 'getPublicGroup
 Route::post('/groups', [GroupController::class, 'createGroup'])->name('groups.createGroup');
 Route::post('/groups/add-members', [GroupController::class, 'addMembers'])->name('groups.addMembers');
 Route::post('/groups/join', [GroupController::class, 'joinGroup'])->name('groups.joinGroup');
-Route::apiResource('groups', GroupController::class)->only(['update', 'destroy']);
+Route::apiResource('groups', GroupController::class)->only(['update']);

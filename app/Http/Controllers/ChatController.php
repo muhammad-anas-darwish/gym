@@ -97,4 +97,20 @@ class ChatController extends Controller
 
         return response()->json($chat);
     }
+
+    /**
+     * Delete specific chat, group and user_chats.
+     * @param \App\Models\Chat $chat
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function deleteGroup(Chat $chat)
+    {
+        if ($chat->is_direct) {
+            throw new CustomException('this is direct chat not group.', 403);
+        }
+
+        $chat->delete();
+
+        return response()->json(['message' => 'Records deleted.'], 204);
+    }
 }

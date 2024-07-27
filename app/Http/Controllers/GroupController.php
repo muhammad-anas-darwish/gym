@@ -72,16 +72,8 @@ class GroupController extends Controller
         if ($request->hasFile('group_photo')) { // save image if it exists
             $data['chat_photo_path'] = $request->file('group_photo')->store('/images/chats', ['disk' => 'public']);
         }
-
         $group->update($data);
 
         return response()->json(['message' => 'Group updated.']);
-    }
-
-    public function destroy(Group $group)
-    {
-        $group->delete();
-
-        return response()->json(['message' => 'Records deleted.'], 204);
     }
 }

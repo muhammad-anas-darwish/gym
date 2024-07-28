@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserChatRole;
 use App\Http\Requests\AddMembersToGroupRequest;
+use App\Http\Requests\ChangeUserChatRoleRequest;
 use App\Http\Requests\JoinGroupRequest;
 use App\Http\Requests\LeaveGroupRequest;
+use App\Http\Requests\RemoveUserFromGroupRequest;
 use App\Models\Group;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
@@ -97,5 +99,27 @@ class GroupController extends Controller
         $group->update($data);
 
         return response()->json(['message' => 'Group updated.']);
+    }
+
+    public function changeUserChatRole(ChangeUserChatRoleRequest $request)
+    {
+        $data = $request->validated();
+
+        UserChat::where('chat_id', $data['chat_id'])
+            ->where('user_id', $data['user_id'])
+            ->update(['role' => $data['role']]);
+
+        return response()->json(['message' => 'user chat role updated.']);
+    }
+
+    public function removeUser(RemoveUserFromGroupRequest $request)
+    {
+        $data = $request->validated();
+
+        UserChat::where('chat_id', $data['chat_id'])
+            ->where('user_id', $data['user_id'])
+            ->delete();
+
+        return response()->json(['message' => 'User removed from group.'], 204);
     }
 }

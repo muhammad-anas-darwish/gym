@@ -98,4 +98,6 @@ Route::post('/groups', [GroupController::class, 'createGroup'])->name('groups.cr
 Route::post('/groups/add-members', [GroupController::class, 'addMembers'])->name('groups.addMembers');
 Route::post('/groups/join', [GroupController::class, 'joinGroup'])->name('groups.joinGroup');
 Route::post('/groups/leave', [GroupController::class, 'leaveGroup'])->name('groups.leaveGroup');
+Route::patch('/groups/change-user-chat-role', [GroupController::class, 'changeUserChatRole'])->name('groups.changeUserChatRole');
+Route::delete('/groups/remove-user', [GroupController::class, 'removeUser'])->name('groups.removeUser');
 Route::apiResource('groups', GroupController::class)->only(['update']);

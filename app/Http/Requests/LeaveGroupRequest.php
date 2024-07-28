@@ -3,11 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Models\Chat;
-use App\Models\UserChat;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class JoinGroupRequest extends FormRequest
+class LeaveGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,24 +25,14 @@ class JoinGroupRequest extends FormRequest
     {
         return [
             'chat_id' => [
-                'required',
-                'integer',
-                'exists:chats,id', // Ensure the chat exists
+                'required', 
+                'exists:chats,id',
                 function ($attribute, $value, $fail) {
                     $chat = Chat::find($value);
-                    if ($chat && $chat->is_direct) {
-                        $fail('The selected chat is not a group.');
-                    }
 
-                    if ($chat && !$chat->group->is_private) {
-                        $fail('This is not a public group');
+                    if (!$chat || !$chat->users()->where('user_id', Auth::id())->exists()) {
+                        $fail('You are not a member of this group.');
                     }
-
-                    $userChatExists = UserChat::where('chat_id', $value)
-                        ->where('user_id', Auth::id())->exists();
-                    if ($userChatExists) {
-                        $fail('You are already in this group');
-                    }  
                 },
             ],
         ];

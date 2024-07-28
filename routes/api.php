@@ -97,4 +97,5 @@ Route::get('/groups/get-public-groups', [GroupController::class, 'getPublicGroup
 Route::post('/groups', [GroupController::class, 'createGroup'])->name('groups.createGroup');
 Route::post('/groups/add-members', [GroupController::class, 'addMembers'])->name('groups.addMembers');
 Route::post('/groups/join', [GroupController::class, 'joinGroup'])->name('groups.joinGroup');
+Route::post('/groups/leave', [GroupController::class, 'leaveGroup'])->name('groups.leaveGroup');
 Route::apiResource('groups', GroupController::class)->only(['update']);

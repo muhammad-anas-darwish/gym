@@ -48,4 +48,9 @@ class ChatService implements ChatServiceInterface
         $user = User::find($userId);
         return $this->getUserDirectChats($user)->merge($this->getUserGroupChats($user));
     }
+
+    public function destroyChat(Chat $chat): void
+    {
+        $chat->delete();
+    }
 }

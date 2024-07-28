@@ -8,7 +8,6 @@ use App\Models\UserChat;
 use App\Services\ChatServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\Config\Exception\ValidationException;
 
 class ChatController extends Controller
 {
@@ -106,10 +105,10 @@ class ChatController extends Controller
     public function deleteGroup(Chat $chat)
     {
         if ($chat->is_direct) {
-            throw new CustomException('this is direct chat not group.', 403);
+            throw new CustomException('This is a direct chat, not a group.', 403);
         }
 
-        $chat->delete();
+        $this->chatService->destroyChat($chat);
 
         return response()->json(['message' => 'Records deleted.'], 204);
     }

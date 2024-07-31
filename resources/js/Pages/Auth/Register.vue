@@ -7,10 +7,14 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import SelectInput from '@/Components/SelectInput.vue';
 
 const form = useForm({
     name: '',
+    username: '',
     email: '',
+    birth_date: '',
+    gender: '',
     password: '',
     password_confirmation: '',
     terms: false,
@@ -21,6 +25,10 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const format = (value, event) => {
+    return moment(value).format('YYYY-MM-DD')
+}
 </script>
 
 <template>
@@ -44,6 +52,20 @@ const submit = () => {
                     autocomplete="name"
                 />
                 <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
+            <div>
+                <InputLabel for="username" value="Username" class="mt-4" />
+                <TextInput
+                    id="username"
+                    v-model="form.username"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="username"
+                />
+                <InputError class="mt-2" :message="form.errors.username" />
             </div>
 
             <div class="mt-4">
@@ -96,6 +118,38 @@ const submit = () => {
                     </div>
                     <InputError class="mt-2" :message="form.errors.terms" />
                 </InputLabel>
+            </div>
+
+            <div>
+                <InputLabel for="birth_date" value="Birth Date" class="mt-4" />
+                <TextInput
+                    id="birth_date"
+                    v-model="form.birth_date"
+                    type="date"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="birth_date"
+                />
+                <InputError class="mt-2" :message="form.errors.birth_date" />
+            </div>
+
+            <div>
+                <InputLabel for="gender" value="Gender" class="mt-4" />
+                <SelectInput
+                    id="gender"
+                    v-model="form.gender"
+                    type="date"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="gender"
+                >
+                    <option selected>---------</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </SelectInput>
+                <InputError class="mt-2" :message="form.errors.gender" />
             </div>
 
             <div class="flex items-center justify-end mt-4">

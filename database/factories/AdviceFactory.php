@@ -18,8 +18,7 @@ class AdviceFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->name(),
-            'category_id' => $this->faker->randomElement(Category::pluck('id')),
+            'title' => $this->faker->sentence(),
         ];
     }
 }

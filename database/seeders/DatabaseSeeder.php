@@ -20,7 +20,6 @@ use App\Models\Report;
 use App\Models\Specialty;
 use App\Models\TrainingSession;
 use App\Models\User;
-use App\Models\UserExercise;
 use App\Models\UserInformation;
 use App\Models\Video;
 use Illuminate\Database\Seeder;
@@ -32,27 +31,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Coach::factory(20)->create();
-
-        User::factory(20)->create(['user_role' => 'trainee'])->each(function ($trainee) {
-            $trainee->coaches()->attach(
-                Coach::inRandomOrder()->limit(rand(1, 3))->pluck('user_id')
-            );
-        });
-
-        Muscle::factory(10)->create();
-
-        Exercise::factory(20)->create()->each(function ($exercise) {
-            $exercise->muscles()->attach(
-                Muscle::inRandomOrder()->limit(rand(1,3))->pluck('id')
-            );
-        });
-
-        Food::factory(16)->create();
-
         Category::factory(16)->create();
-
+        Food::factory(16)->create();
         Package::factory(3)->create();
+
+        $this->call([
+            UserSeeder::class,
+            MuscleExerciseSeeder::class,
+            MediaSeeder::class,
+            MealSeeder::class,
+            TrainingSeeder::class,
+        ]);
 
         // Chat::factory(20)->create()->each(function ($chat) {
         //     $chat->users()->attach(
@@ -70,26 +59,7 @@ class DatabaseSeeder extends Seeder
             );
         });
 
-        Advice::factory(40)->create();
-
-        Article::factory(20)->create();
-
-        Meal::factory(40)->create()->each(function ($meal) {
-            $meal->foods()->attach(
-                Food::inRandomOrder()->limit(rand(2,4))->pluck('id'), 
-                ['amount' => rand(1, 5) . '00 G']
-            );
-        });
-
-        // Video::factory(10)->create();
-
-        TrainingSession::factory(10)->create();
-
-        UserExercise::factory(50)->create();
-
         Report::factory(40)->create();
-
-        UserInformation::factory(30)->create();
 
         Specialty::factory(5)->create()->each(function ($specialty) {
             $specialty->coaches()->attach(

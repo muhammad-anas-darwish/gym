@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Exercise extends Model
 {
@@ -12,9 +13,9 @@ class Exercise extends Model
     protected $fillable = ['name', 'description', 'exercise_photo_path'];
     public $timestamps = false;
 
-    public function muscles()
+    public function muscles(): BelongsToMany
     {
-        return $this->belongsToMany(Muscle::class, 'muscle_exercise')
+        return $this->belongsToMany(Muscle::class, MuscleExercise::class)
             ->select('muscles.id', 'muscles.name');
     }
 

@@ -19,7 +19,7 @@ class CoachFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(1)->create(['user_role' => UserRole::COACH])[0]->id,
+            'user_id' => User::factory()->create(['user_role' => UserRole::COACH->value]),
             'description' => $this->faker->paragraph(),
         ];
     }

@@ -19,8 +19,7 @@ class UserInformationFactory extends Factory
     {
         return [
             'height' => $this->faker->randomNumber(2),
-            'weight' => $this->faker->randomFloat(2, 0, 1000),
-            'user_id' => $this->faker->randomElement(User::pluck('id')),
+            'weight' => $this->faker->randomFloat(2, 0, 100),
         ];
     }
 }

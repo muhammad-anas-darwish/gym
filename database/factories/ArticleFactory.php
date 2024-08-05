@@ -19,9 +19,7 @@ class ArticleFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->randomElement(User::pluck('id')),
-            'category_id' => $this->faker->randomElement(Category::pluck('id')),
-            'title' => $this->faker->name(),
+            'title' => $this->faker->sentence(2),
             'description' => $this->faker->text(),
         ];
     }

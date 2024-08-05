@@ -18,7 +18,7 @@ class TrainingSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->unique()->name(),
+            'title' => $this->faker->unique()->sentence(2),
         ];
     }
 }

@@ -18,8 +18,7 @@ class MealFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->randomElement(User::pluck('id')),
-            'name' => $this->faker->name(),
+            'name' => $this->faker->sentence(2),
             'day' => $this->faker->dayOfWeek(),
         ];
     }

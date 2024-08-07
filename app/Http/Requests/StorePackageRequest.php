@@ -24,7 +24,7 @@ class StorePackageRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:64'],
             'description' => ['sometimes', 'nullable', 'string', 'max:1024'],
-            'limit' => ['required', 'integer', 'between:1,700'],
+            'duration' => ['required', 'integer', 'between:1,700'],
             'price' => ['required', 'numeric', 'max:20000000000.99'],
             'is_active' => ['filled', 'boolean'],
             'specialties' => ['array'],

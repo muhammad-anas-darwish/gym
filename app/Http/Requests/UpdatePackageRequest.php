@@ -24,7 +24,7 @@ class UpdatePackageRequest extends FormRequest
         return [
             'title' => ['filled', 'string', 'max:64'],
             'description' => ['filled', 'string', 'max:1024'],
-            'limit' => ['filled', 'numeric', 'between:1,700'],
+            'duration' => ['filled', 'numeric', 'between:1,700'],
             'price' => ['filled', 'numeric', 'max:20000000000.99'],
             'is_active' => ['filled', 'boolean'],
             'specialties' => ['array'],

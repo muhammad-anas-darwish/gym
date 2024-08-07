@@ -19,7 +19,7 @@ class PackageFactory extends Factory
         return [
             'title' => $this->faker->name(),
             'description' => $this->faker->text(),
-            'limit' => $this->faker->numberBetween(1, 700),
+            'duration' => $this->faker->numberBetween(1, 700),
             'price' => $this->faker->numberBetween(0, 2000000000),
             'is_active' => 1,
         ];

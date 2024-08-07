@@ -26,7 +26,7 @@ class PackageControllerTest extends TestCase
                 'id',
                 'title', 
                 'description', 
-                'limit', 
+                'duration', 
                 'price',
                 'is_active', 
                 'specialties' => [
@@ -43,7 +43,7 @@ class PackageControllerTest extends TestCase
             'id' => $package->id,
             'title' => $package->title,
             'description' => $package->description,
-            'limit' => $package->limit,
+            'duration' => $package->duration,
             'price' => $package->price,
             'is_active' => $package->is_active,
 

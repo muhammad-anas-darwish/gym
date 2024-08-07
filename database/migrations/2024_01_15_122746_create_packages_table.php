@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 64);
             $table->text('description')->nullable();
-            $table->smallInteger('limit'); // limit days
+            $table->smallInteger('duration'); // duration days
             $table->double('price');
             $table->boolean('is_active')->default(1);
             $table->timestamps();

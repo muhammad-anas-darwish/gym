@@ -13,9 +13,16 @@ class PackageController extends Controller
      */
     public function index()
     {
-        $package = Package::all();
+        $packages = Package::with('specialties')->get();
 
-        return response()->json($package);
+        return response()->json($packages);
+    }
+
+    public function getActivePackages()
+    {
+        $packages = Package::with('specialties')->active()->get();
+
+        return response()->json($packages);
     }
 
     /**
@@ -24,11 +31,15 @@ class PackageController extends Controller
     public function store(StorePackageRequest $request)
     {
         $data = $request->validated();
+        $specialties = isset($data['specialties'])? $data['specialties']: null;
+        unset($data['specialties']);
 
-        // store
-        Package::create($data);
+        $package = Package::create($data);
+        if (!is_null($specialties)) {
+            $package->specialties()->attach($specialties);
+        }
 
-        return response()->json(['message' => 'Package added.'], 201);
+        return $this->respondOk('Package added.');
     }
 
     /**
@@ -36,7 +47,7 @@ class PackageController extends Controller
      */
     public function show(Package $package)
     {
-        return response()->json($package);
+        return response()->json($package->load('specialties'));
     }
 
     /**
@@ -45,12 +56,15 @@ class PackageController extends Controller
     public function update(UpdatePackageRequest $request, Package $package)
     {
         $data = $request->validated();
+        $specialties = isset($data['specialties'])? $data['specialties']: null;
+        unset($data['specialties']);
 
-        // update
         $package->update($data);
+        if (!is_null($specialties)) {
+            $package->specialties()->sync($specialties);
+        }
 
-        // redirect
-        return response()->json(['message' => 'package updated.']);
+        return $this->respondOk('Package updated.');
     }
 
     /**
@@ -58,9 +72,8 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        // delete
         $package->delete();
 
-        return response()->json(['message' => 'Records deleted.'], 204);
+        return $this->respondOk('Package Deleted.');
     }
 }

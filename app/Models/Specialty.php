@@ -17,4 +17,9 @@ class Specialty extends Model
     {
         return $this->belongsToMany(Coach::class, CoachSpecialty::class);
     }
+
+    public function packages(): BelongsToMany
+    {
+        return $this->belongsToMany(Package::class, PackageSpecialty::class);
+    }
 }

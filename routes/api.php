@@ -45,7 +45,8 @@ Route::apiResource('muscles', MuscleController::class)->only(['index', 'store', 
 Route::apiResource('exercises', ExerciseController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 Route::apiResource('foods', FoodController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::apiResource('packages', PackageController::class)->only(['index', 'store', 'show','update', 'destroy']);
+Route::get('/packages/get-active-packages', [PackageController::class, 'getActivePackages'])->name('packages.getActivePackages');
+Route::apiResource('packages', PackageController::class);
 Route::get('/chats/members/{chatId}', [ChatController::class, 'getMembers'])->name('chats.getMembers')->whereNumber('chatId');
 Route::get('/chats/get-user-chats', [ChatController::class, 'getUserChats'])->name('chats.getUserChats');
 Route::delete('/chats/{chat}', [ChatController::class, 'deleteGroup'])->name('chats.deleteGroup');

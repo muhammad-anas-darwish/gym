@@ -21,6 +21,7 @@ class PackageFactory extends Factory
             'description' => $this->faker->text(),
             'limit' => $this->faker->numberBetween(1, 700),
             'price' => $this->faker->numberBetween(0, 2000000000),
+            'is_active' => 1,
         ];
     }
 }

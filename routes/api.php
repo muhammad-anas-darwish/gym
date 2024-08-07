@@ -66,8 +66,8 @@ Route::get('/user-exercise/my', [UserExerciseController::class, 'getExercises'])
 Route::get('/user-exercise/{userId}', [UserExerciseController::class, 'getUserExercises'])->name('user-exercise.getUserExercises')->whereNumber('userId');
 Route::apiResource('user-chat', UserChatController::class)->only(['store', 'destroy']);
 Route::apiResource('training-sessions', TrainingSessionController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'show', 'destroy']);
-Route::get('/reports/mark-as-read/{report}', [ReportController::class, 'markAsRead'])->name('reports.markAsRead');
+Route::patch('/reports/change-status/{report}', [ReportController::class, 'changeStatus'])->name('reports.changeStatus');
+Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'show']);
 Route::apiResource('user-information', UserInformationController::class)->only(['store', 'destroy']);
 Route::get('/user-information/{userId}', [UserInformationController::class, 'getUserInformationForCoach'])->name('user-information.getUserInformationForCoach')->whereNumber('userId');
 Route::get('/user-information', [UserInformationController::class, 'getUserInformationForUser'])->name('user-information.getUserInformationForUser');

@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ValidIssueType;
+use App\Enums\ReportStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreReportRequest extends FormRequest
+class ChangeReportStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,7 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['required', 'string', 'max:1024'],
-            'issue_type' => ['required', 'string', new ValidIssueType],
+            'status' => ['required', Rule::enum(ReportStatus::class)],
         ];
     }
 }

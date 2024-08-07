@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReportStatus;
+use App\Enums\ReportType;
 use App\Filters\Filter;
+use App\Http\Requests\ChangeReportStatusRequest;
 use App\Models\Report;
 use App\Http\Requests\StoreReportRequest;
+use App\Services\Reports\ReportCreatorFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,15 +19,12 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        $reports = Report::query();
-
-        $filter = new Filter($reports);
-        $filter->where('is_read', $request->query('is_read'));
-
-        $reports = $reports->select('title', 'is_read')
-            ->with('user:id,name,email')
-            ->paginate(20);
-
+        $reports = Report::filter(function ($filter) use ($request) {
+            $filter->where('issue_type', $request->query('issue_type'))
+                ->where('status', $request->query('report_status'))
+                ->where('user_id', $request->query('user_id'));
+        })->paginate(20);
+        
         return response()->json($reports);
     }
 
@@ -33,11 +34,13 @@ class ReportController extends Controller
     public function store(StoreReportRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = Auth::id();
 
-        Report::create($data);
+        $issueType = ReportType::from($data['issue_type']);
 
-        return response()->json(['message' => 'Report added.'], 201);
+        $creator = ReportCreatorFactory::create($issueType);
+        $creator->createReport(Auth::id(), $data['description'], $issueType);
+
+        return $this->respondOk('Report added.');
     }
 
     /**
@@ -45,26 +48,19 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        return response()->json($report);
+        if ($report['status'] === ReportStatus::NEW) {
+            $report->update(['status' => ReportStatus::VIEWED->value]);
+        }
+
+        return response()->json($report->load('user:id,name,username', 'reportable'));
     }
 
-    /**
-     * Mark The specified report as read
-     */
-    public function markAsRead(Report $report)
+    public function changeStatus(ChangeReportStatusRequest $request, Report $report)
     {
-        $report->update(['is_read' => true]);
+        $data = $request->validated();
 
-        return response()->json(['message' => 'The report has been marked as read.']);
-    }
+        $report->update($data);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Report $report)
-    {
-        $report->delete();
-
-        return response()->json(['message' => 'Records deleted.'], 204);
+        return $this->respondOk('Report status updated.');
     }
 }

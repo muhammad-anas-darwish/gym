@@ -11,7 +11,7 @@ class Coach extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'description'];
+    protected $fillable = ['user_id', 'description', 'is_active'];
 
     public function specialties(): BelongsToMany
     {

@@ -49,15 +49,15 @@ class DatabaseSeeder extends Seeder
         //     );
         // });
         
-        Group::factory(20)->create();
+        // Group::factory(20)->create();
 
-        Chat::factory(40)->create([
-            'is_direct' => true,
-        ])->each(function ($chat) {
-            $chat->users()->attach(
-                User::inRandomOrder()->limit(2)->pluck('id'), 
-            );
-        });
+        // Chat::factory(40)->create([
+        //     'is_direct' => true,
+        // ])->each(function ($chat) {
+        //     $chat->users()->attach(
+        //         User::inRandomOrder()->limit(2)->pluck('id'), 
+        //     );
+        // });
 
         Report::factory(40)->create();
 

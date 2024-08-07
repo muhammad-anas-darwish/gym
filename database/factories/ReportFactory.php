@@ -18,9 +18,8 @@ class ReportFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->name(),
+            'issue_type' => 'technical_issue',
             'description' => $this->faker->text(),
-            'is_read' => $this->faker->boolean(),
             'user_id' => $this->faker->randomElement(User::pluck('id')),
         ];
     }

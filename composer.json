@@ -13,6 +13,7 @@
         "laravel/jetstream": "^4.2",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "stripe/stripe-php": "^15.7",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
@@ -29,7 +30,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/DataHelper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

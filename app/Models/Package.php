@@ -11,11 +11,13 @@ class Package extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 
+        'name', 
         'description', 
-        'duration', 
         'price',
+        'duration', 
         'is_active',
+        'stripe_product_id',
+        'stripe_price_id',
     ];
     
     public function scopeActive($query)

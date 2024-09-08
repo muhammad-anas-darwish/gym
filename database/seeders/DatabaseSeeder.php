@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
     {
         Category::factory(16)->create();
         Food::factory(16)->create();
-        Package::factory(3)->create();
+        // Package::factory(3)->create();
 
         $this->call([
             UserSeeder::class,

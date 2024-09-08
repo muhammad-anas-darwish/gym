@@ -22,12 +22,11 @@ class UpdatePackageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['filled', 'string', 'max:64'],
+            'name' => ['filled', 'string', 'max:128'],
             'description' => ['filled', 'string', 'max:1024'],
-            'duration' => ['filled', 'numeric', 'between:1,700'],
             'price' => ['filled', 'numeric', 'max:20000000000.99'],
-            'is_active' => ['filled', 'boolean'],
-            'specialties' => ['array'],
+            'duration' => ['filled', 'integer', 'min:1'],
+            'specialties' => ['nullable', 'array'],
             'specialties.*' => ['exists:specialties,id'],
         ];
     }

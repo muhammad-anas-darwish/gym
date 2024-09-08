@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('package_id')->nullable()->constrained('packages')->nullOnDelete();
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->enum('status', array_column(SubscriptionStatus::cases(), 'value'))->default(SubscriptionStatus::ACTIVE->value);
             $table->timestamps();
         });

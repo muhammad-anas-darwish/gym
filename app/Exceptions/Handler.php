@@ -2,12 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponses;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponses;
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -35,5 +39,14 @@ class Handler extends ExceptionHandler
                 }
             }
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof CustomException) {
+            return $this->errorResponse($exception->getMessage(), $exception->getCode());
+        }
+
+        return parent::render($request, $exception);
     }
 }

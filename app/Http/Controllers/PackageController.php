@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\UpdateStripeProductJob;
 use App\Models\Package;
 use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdatePackageRequest;
+use App\Services\Packages\PackageService;
+use App\Services\Packages\PackageUpdateService;
+use App\Services\Stripe\StripeManagerService;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PackageController extends Controller
 {
+    public function __construct(
+        protected PackageService $packageService, 
+        protected StripeManagerService $stripeManagerService,
+        protected PackageUpdateService $packageUpdateService,
+    ) { }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -31,13 +45,42 @@ class PackageController extends Controller
     public function store(StorePackageRequest $request)
     {
         $data = $request->validated();
-        $specialties = isset($data['specialties'])? $data['specialties']: null;
+        $specialties = $data['specialties'] ?? null;
         unset($data['specialties']);
 
-        $package = Package::create($data);
-        if (!is_null($specialties)) {
-            $package->specialties()->attach($specialties);
+        DB::beginTransaction();
+        
+        try {
+            // Create Package
+            $package = $this->packageService->createPackage($data, $specialties);
+  
+            // Create stripe product and price 
+            $stripeProductAndPrice = $this->stripeManagerService->createProductWithPrice(
+                $data['name'], 
+                $data['description'], 
+                $data['price'], 
+                $data['duration'], 
+                $data['is_active']
+            ); 
+
+            try {
+                // Add stripe information to the package
+                $package = $this->packageService->attachPackageWithStripe(
+                    $package, 
+                    $stripeProductAndPrice['product']->id, 
+                    $stripeProductAndPrice['price']->id
+                );
+            } catch (Exception $e) {
+                DB::rollBack();
+                $this->stripeManagerService->deactivateProductAndPrice($stripeProductAndPrice['product']->id);
+                return $this->errorResponse('Failed to attach Stripe information to the package.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Failed to create the subscription plan. Please try again later.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+  
+        DB::commit();
 
         return $this->respondOk('Package added.');
     }
@@ -55,16 +98,16 @@ class PackageController extends Controller
      */
     public function update(UpdatePackageRequest $request, Package $package)
     {
-        $data = $request->validated();
-        $specialties = isset($data['specialties'])? $data['specialties']: null;
-        unset($data['specialties']);
+        $specialties = $request->specialties ?? null;
 
-        $package->update($data);
-        if (!is_null($specialties)) {
-            $package->specialties()->sync($specialties);
+        try {
+            $this->packageUpdateService->updatePackageWithStripe($package, $request->validated(), $specialties);
+
+            return $this->respondOk('Package updated.');
+        } catch (Exception $e) {
+            info($e);
+            return $this->errorResponse('Failed to update package', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return $this->respondOk('Package updated.');
     }
 
     /**

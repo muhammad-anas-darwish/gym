@@ -22,10 +22,10 @@ class StorePackageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:64'],
-            'description' => ['sometimes', 'nullable', 'string', 'max:1024'],
-            'duration' => ['required', 'integer', 'between:1,700'],
+            'name' => ['required', 'string', 'max:128'],
+            'description' => ['required', 'string', 'max:1024'],
             'price' => ['required', 'numeric', 'max:20000000000.99'],
+            'duration' => ['required', 'integer', 'min:1'],
             'is_active' => ['filled', 'boolean'],
             'specialties' => ['array'],
             'specialties.*' => ['exists:specialties,id'],

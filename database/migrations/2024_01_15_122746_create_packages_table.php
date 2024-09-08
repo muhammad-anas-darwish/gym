@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 64);
+            $table->string('name');
             $table->text('description')->nullable();
-            $table->smallInteger('duration'); // duration days
-            $table->double('price');
-            $table->boolean('is_active')->default(1);
+            $table->double('price', 8, 2);
+            $table->smallInteger('duration'); // duration months
+            $table->boolean('is_active')->default(true);
+            $table->string('stripe_product_id')->nullable();
+            $table->string('stripe_price_id')->nullable();
             $table->timestamps();
-        });
+        });        
     }
 
     /**

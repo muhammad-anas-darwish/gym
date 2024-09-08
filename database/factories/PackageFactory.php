@@ -17,7 +17,7 @@ class PackageFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->name(),
+            'name' => $this->faker->name(),
             'description' => $this->faker->text(),
             'duration' => $this->faker->numberBetween(1, 700),
             'price' => $this->faker->numberBetween(0, 2000000000),

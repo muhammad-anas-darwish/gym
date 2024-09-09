@@ -7,7 +7,6 @@ use App\Helpers\DataHelper;
 use Exception;
 use Stripe\Product as StripeProduct;
 use Stripe\Stripe;
-use Stripe\StripeClientInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class StripeProductService implements StripeProductServiceInterface

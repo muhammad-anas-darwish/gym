@@ -103,5 +103,3 @@ Route::post('/groups/leave', [GroupController::class, 'leaveGroup'])->name('grou
 Route::patch('/groups/change-user-chat-role', [GroupController::class, 'changeUserChatRole'])->name('groups.changeUserChatRole');
 Route::delete('/groups/remove-user', [GroupController::class, 'removeUser'])->name('groups.removeUser');
 Route::apiResource('groups', GroupController::class)->only(['update']);
-
-Route::post('/stripe/product/', [PackageController::class, 'store']);

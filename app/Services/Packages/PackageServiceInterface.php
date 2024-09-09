@@ -13,4 +13,6 @@ interface PackageServiceInterface
     public function updatePackageWithNewPrice(Package $package, string $newPriceId): void;
 
     public function updatePackage(Package $package, array $data, ?array $specialties): Package;
+
+    public function deletePackage(Package $package): void;
 }

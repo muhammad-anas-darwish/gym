@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\UpdateStripeProductJob;
 use App\Models\Package;
 use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdatePackageRequest;
@@ -72,7 +71,7 @@ class PackageController extends Controller
                 );
             } catch (Exception $e) {
                 DB::rollBack();
-                $this->stripeManagerService->deactivateProductAndPrice($stripeProductAndPrice['product']->id);
+                $this->stripeManagerService->deactivateProductAndPrice($stripeProductAndPrice['product']->id, $stripeProductAndPrice['price']->id);
                 return $this->errorResponse('Failed to attach Stripe information to the package.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         } catch (Exception $e) {
@@ -105,7 +104,6 @@ class PackageController extends Controller
 
             return $this->respondOk('Package updated.');
         } catch (Exception $e) {
-            info($e);
             return $this->errorResponse('Failed to update package', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -115,7 +113,8 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        $package->delete();
+        $this->stripeManagerService->deactivateProductAndPrice($package->stripe_product_id, $package->stripe_price_id);
+        $this->packageService->deletePackage($package);
 
         return $this->respondOk('Package Deleted.');
     }

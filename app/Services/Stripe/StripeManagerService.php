@@ -44,12 +44,13 @@ class StripeManagerService
         UpdateStripeProductJob::dispatch($updateStripePackageDTO);
     }
 
-    public function deactivateProductAndPrice(string $productId): void
+    public function deactivateProductAndPrice(string $productId, string $priceId): void
     {
         $product = $this->productService->updateProduct($productId, active: false);
+        $price = $this->priceService->changeActivePrice($priceId, false);
 
-        if (!$product->updated || $product->active !== false) {
+        if (!$product->updated || $product->active !== false || $price->active !== false) {
             throw new CustomException('Product and price does not deactivated');
         }
-    } 
+    }
 }

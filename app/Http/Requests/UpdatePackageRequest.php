@@ -26,6 +26,7 @@ class UpdatePackageRequest extends FormRequest
             'description' => ['filled', 'string', 'max:1024'],
             'price' => ['filled', 'numeric', 'max:20000000000.99'],
             'duration' => ['filled', 'integer', 'min:1'],
+            'is_active' => ['filled', 'boolean'],
             'specialties' => ['nullable', 'array'],
             'specialties.*' => ['exists:specialties,id'],
         ];

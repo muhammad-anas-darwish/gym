@@ -6,8 +6,6 @@ use Stripe\Product as StripeProduct;
 
 interface StripeProductServiceInterface
 {
-   
-
     public function createProduct(string $name, string $description, bool $active = true): StripeProduct;
 
     public function deleteProduct(string $productId): void;

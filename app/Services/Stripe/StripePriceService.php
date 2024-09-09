@@ -42,6 +42,11 @@ class StripePriceService implements StripePriceServiceInterface
         return StripePrice::retrieve($priceId);
     }
 
+    public function changeActivePrice(string $priceId, bool $active): StripePrice
+    {
+        return $this->performPriceUpdate($priceId, ['active' => $active]);
+    }
+
     public function updatePrice(string $priceId, float $amount, int $interval_count, bool $active): StripePrice
     {
         $currentPrice = $this->retrievePrice($priceId);

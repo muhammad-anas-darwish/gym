@@ -56,4 +56,9 @@ class PackageService implements PackageServiceInterface
 
         return $package;
     }
+
+    public function deletePackage(Package $package): void
+    {
+        $package->delete();
+    }
 }

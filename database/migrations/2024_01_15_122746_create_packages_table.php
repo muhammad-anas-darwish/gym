@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('stripe_product_id')->nullable();
             $table->string('stripe_price_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });        
     }
 

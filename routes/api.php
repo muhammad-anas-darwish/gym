@@ -8,6 +8,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\CoachSpecialtyController;
 use App\Http\Controllers\CoachTraineeController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\GroupController;
@@ -48,6 +49,7 @@ Route::apiResource('foods', FoodController::class)->only(['index', 'show', 'stor
 Route::apiResource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::get('/packages/get-active-packages', [PackageController::class, 'getActivePackages'])->name('packages.getActivePackages');
 Route::apiResource('packages', PackageController::class);
+Route::apiResource('coupons', CouponController::class)->only(['index', 'store', 'show', 'destroy']);
 Route::get('/chats/members/{chatId}', [ChatController::class, 'getMembers'])->name('chats.getMembers')->whereNumber('chatId');
 Route::get('/chats/get-user-chats', [ChatController::class, 'getUserChats'])->name('chats.getUserChats');
 Route::delete('/chats/{chat}', [ChatController::class, 'deleteGroup'])->name('chats.deleteGroup');

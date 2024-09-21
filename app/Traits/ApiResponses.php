@@ -41,15 +41,20 @@ trait ApiResponses
     {
         return $this->successResponse([
             'items' => $resourceClass::collection($items),
-            'pagination' => [
-                'total' => $items->total(),
-                'count' => $items->count(),
-                'per_page' => $items->perPage(),
-                'current_page' => $items->currentPage(),
-                'total_pages' => $items->lastPage(),
-                'next_page_url' => $items->nextPageUrl(),
-                'previous_page_url' => $items->previousPageUrl(),
-            ]
+            'pagination' => $this->paginationDetails($items),
         ], $message);
+    }
+
+    private function paginationDetails($items): array
+    {
+        return [
+            'total' => $items->total(),
+            'count' => $items->count(),
+            'per_page' => $items->perPage(),
+            'current_page' => $items->currentPage(),
+            'total_pages' => $items->lastPage(),
+            'next_page_url' => $items->nextPageUrl(),
+            'previous_page_url' => $items->previousPageUrl(),
+        ];
     }
 }

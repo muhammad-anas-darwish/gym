@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Traits\ApiResponses;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 

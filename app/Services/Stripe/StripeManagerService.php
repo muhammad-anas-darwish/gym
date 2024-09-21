@@ -2,16 +2,20 @@
 
 namespace App\Services\Stripe;
 
+use App\DTOs\CouponDTO;
 use App\DTOs\Stripe\UpdatePackageDTO as UpdateStripePackageDTO;
 use App\Exceptions\CustomException;
 use App\Jobs\UpdateStripeProductJob;
+use App\Services\Stripe\Coupons\StripeCouponFacadeInterface;
+use Stripe\Coupon as StripeCoupon;
 use Symfony\Component\HttpFoundation\Response;
 
 class StripeManagerService 
 {
     public function __construct(
         protected StripeProductServiceInterface $productService, 
-        protected StripePriceServiceInterface $priceService
+        protected StripePriceServiceInterface $priceService,
+        protected StripeCouponFacadeInterface $stripeCouponFacade,
     ) { }
 
     public function createProductWithPrice(string $name, string $description, float $amount, int $intervalCount = 1, bool $active = true): array
@@ -52,5 +56,15 @@ class StripeManagerService
         if (!$product->updated || $product->active !== false || $price->active !== false) {
             throw new CustomException('Product and price does not deactivated');
         }
+    }
+
+    public function createCoupon(CouponDTO $couponDTO): StripeCoupon
+    {
+        return $this->stripeCouponFacade->createCoupon($couponDTO);
+    }
+
+    public function deleteCoupon(string $couponId): StripeCoupon
+    {
+        return $this->stripeCouponFacade->deleteCoupon($couponId);
     }
 }

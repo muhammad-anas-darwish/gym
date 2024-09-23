@@ -18,6 +18,8 @@ return new class extends Migration
             $table->enum('duration', array_column(CouponDuration::cases(), 'value'));
             $table->integer('duration_in_months')->nullable(); // if duration is repeating
             $table->string('stripe_id')->nullable()->unique();
+            $table->integer('max_redemptions')->nullable();
+            $table->timestamp('redeem_by')->nullable();
             $table->timestamps();
         });
     }

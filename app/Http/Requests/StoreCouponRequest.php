@@ -29,6 +29,8 @@ class StoreCouponRequest extends FormRequest
             'percent_off' => ['required', 'numeric', 'min:0', 'max:100'],
             'duration' => ['required', 'string', Rule::enum(CouponDuration::class)],
             'duration_in_months' => ['nullable', 'integer', new ValidDurationInMonths(request('duration'))],
+            'max_redemptions' => ['nullable', 'integer', 'min:1'],
+            'redeem_by' => ['nullable', 'date_format:Y-m-d H:i:s', 'after:now'],
         ];
     }
 }

@@ -16,6 +16,8 @@ class StripeCouponFacade implements StripeCouponFacadeInterface
                 'percent_off' => $couponDTO->percentOff,
                 'duration' => $couponDTO->duration,
                 'duration_in_months' => $couponDTO->durationInMonths,
+                'max_redemptions' => $couponDTO->maxRedemptions, 
+                'redeem_by' => $couponDTO->redeemBy ? strtotime($couponDTO->redeemBy) : null,
             ]);
         } catch (\Exception $e) {
             throw StripeException::CouponCreationException($e);

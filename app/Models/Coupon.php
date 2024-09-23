@@ -15,6 +15,8 @@ class Coupon extends Model
         'duration',
         'duration_in_months',
         'stripe_id',
+        'max_redemptions', 
+        'redeem_by',
     ];
 
     protected $casts = [

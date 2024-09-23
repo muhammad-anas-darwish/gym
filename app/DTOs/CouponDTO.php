@@ -12,13 +12,24 @@ class CouponDTO
     public float $percentOff;
     public string $duration;
     public ?int $durationInMonths;
+    public ?int $maxRedemptions;
+    public ?string $redeemBy;
 
-    public function __construct(string $couponCode, float $percentOff, string $duration, ?int $durationInMonths = null, ?string $stripeId = null)
-    {
+    public function __construct(
+        string $couponCode, 
+        float $percentOff, 
+        string $duration, 
+        ?int $durationInMonths = null, 
+        ?int $maxRedemptions = null, 
+        ?string $redeemBy = null, 
+        ?string $stripeId = null
+    ) {
         $this->couponCode = $couponCode;
         $this->percentOff = $percentOff;
         $this->duration = $duration;
         $this->durationInMonths = $durationInMonths;
+        $this->maxRedemptions = $maxRedemptions;
+        $this->redeemBy = $redeemBy;
     }
 
     public static function fromArray(array $data): self
@@ -30,6 +41,8 @@ class CouponDTO
             $data['percent_off'],
             $data['duration'],
             $durationInMonths ?? null,
+            $data['max_redemptions'] ?? null,
+            $data['redeem_by'] ?? null,
         );
     }
 

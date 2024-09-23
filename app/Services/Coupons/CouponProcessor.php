@@ -19,7 +19,7 @@ class CouponProcessor implements CouponProcessorInterface
     public function createCoupon(CouponDTO $couponDTO): Coupon
     {
         $this->stripeManagement->createCoupon($couponDTO);
-        
+
         try {
             return $this->couponService->createCoupon($couponDTO);
         } catch (\Exception $e) {

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Category;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -15,9 +16,8 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        return response()->json($categories);
+        return $this->successResponse(CategoryResource::collection($categories));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -26,9 +26,9 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        Category::create($data);
+        $category = Category::create($data);
 
-        return response()->json(['message' => 'Category added.'], 201);
+        return $this->successResponse($category, 201, 'Category added');
     }
 
     /**
@@ -40,7 +40,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return response()->json(['message' => 'Category updated.']);
+        return $this->successResponse($category,  201, message: 'Category updated');
     }
 
     /**
@@ -50,6 +50,6 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return response()->json(['message' => 'Records deleted'], 204);
+        return $this->successResponse(code: 204, message: 'Records deleted');
     }
 }

@@ -11,7 +11,6 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = ['title'];
-    protected $visible = ['id', 'title'];
     public $timestamps = false;
 
     public function advice(): HasOne

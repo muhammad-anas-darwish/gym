@@ -2,59 +2,50 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 trait ApiResponses
 {
-    public function successResponse($data = [], $message = '', $status = 200): JsonResponse
-    {
-        $response = [
-            'status' => 'success',
-        ];
-
-        if ($message) {
-            $response['message'] = $message;
+    public function successResponse(
+        array|ResourceCollection|AnonymousResourceCollection|JsonResource|Collection|string $data = [],
+        int $code = Response::HTTP_OK,
+        ?string $message = null,
+        ?string $direct = null,
+    ): JsonResponse {
+        if (is_null($message)) {
+            $message = Response::$statusTexts[$code];
         }
 
-        if (!empty($data)) {
-            $response['data'] = $data;
-        }
-
-        return response()->json($response, $status);
-    }
-
-    public function noContentResponse(): JsonResponse
-    {
-        return response()->json([], 204);
-    }
-    
-
-    public function errorResponse($message, $status = 400): JsonResponse
-    {
         return response()->json([
-            'status' => 'error',
-            'message' => $message,
-        ], $status);
+            "success" => true,
+            "code" => $code,
+            "direct" => $direct,
+            "message" => $message,
+            "data" => $data
+        ]);
     }
 
-    public function paginatedResponse($items, $resourceClass, $message = 'Data retrieved successfully'): JsonResponse
-    {
-        return $this->successResponse([
-            'items' => $resourceClass::collection($items),
-            'pagination' => $this->paginationDetails($items),
-        ], $message);
-    }
+    public function failedResponse(
+        ?string $message = null,
+        int $code = Response::HTTP_NOT_FOUND,
+        ?string $direct = null,
+        ?array $data = [],
+    ): JsonResponse {
+        if (is_null($message)) {
+            $message = Response::$statusTexts[$code];
+        }
 
-    private function paginationDetails($items): array
-    {
-        return [
-            'total' => $items->total(),
-            'count' => $items->count(),
-            'per_page' => $items->perPage(),
-            'current_page' => $items->currentPage(),
-            'total_pages' => $items->lastPage(),
-            'next_page_url' => $items->nextPageUrl(),
-            'previous_page_url' => $items->previousPageUrl(),
-        ];
+        return response()->json([
+            "success" => false,
+            "code" => $code,
+            "message" => $message,
+            "direct" => $direct,
+            "data" => $data,
+        ], $code);
     }
 }

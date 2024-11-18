@@ -2,33 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\Filter;
+use App\Http\Requests\Advice\StoreAdviceRequest;
+use App\Http\Requests\Advice\UpdateAdviceRequest;
 use App\Models\Advice;
-use App\Http\Requests\StoreAdviceRequest;
-use App\Http\Requests\UpdateAdviceRequest;
-use Illuminate\Http\Request;
+use App\Http\Resources\AdviceResource;
 
 class AdviceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $advices = Advice::query();
+        $advices = Advice::filter()->with('category')->paginate();
 
-        // filters
-        $filter = new Filter($advices);
-        $filter->search(['title' => $request->query('q')])
-            ->where('category_id', $request->query('category_id'));
-
-        $advices = $advices->select('id', 'title', 'category_id')
-            ->with('category')
-            ->paginate(20);
-
-        return response()->json($advices);
+        return $this->successResponse(AdviceResource::collection($advices));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -37,9 +26,10 @@ class AdviceController extends Controller
     {
         $data = $request->validated();
 
-        Advice::create($data);
+        $advice = Advice::create($data);
+        $advice->load('category');
 
-        return response()->json(['message' => 'Advice added.'], 201);
+        return $this->successResponse(new AdviceResource($advice), 201, 'Advice added.');
     }
 
     /**
@@ -47,11 +37,9 @@ class AdviceController extends Controller
      */
     public function getRandomAdvice()
     {
-        $randomAdvice = Advice::inRandomOrder()
-            ->select('title')
-            ->first();
+        $randomAdvice = Advice::inRandomOrder()->first();
 
-        return response()->json($randomAdvice);
+        return $this->successResponse(new AdviceResource($randomAdvice));
     }
 
     /**
@@ -62,8 +50,9 @@ class AdviceController extends Controller
         $data = $request->validated();
 
         $advice->update($data);
+        $advice->load('category');
 
-        return response()->json(['message' => 'Advice updated.']);
+        return $this->successResponse(new AdviceResource($advice), message: 'Advice updated.');
     }
 
     /**
@@ -73,6 +62,6 @@ class AdviceController extends Controller
     {
         $advice->delete();
 
-        return response()->json(['message' => 'Records deleted.'], 204);
+        return $this->successResponse(message: 'Records deleted.', code: 204);
     }
 }

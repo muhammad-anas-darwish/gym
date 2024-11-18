@@ -72,11 +72,11 @@ class PackageController extends Controller
             } catch (Exception $e) {
                 DB::rollBack();
                 $this->stripeManagerService->deactivateProductAndPrice($stripeProductAndPrice['product']->id, $stripeProductAndPrice['price']->id);
-                return $this->errorResponse('Failed to attach Stripe information to the package.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
+                return $this->failedResponse('Failed to attach Stripe information to the package.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->errorResponse('Failed to create the subscription plan. Please try again later.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->failedResponse('Failed to create the subscription plan. Please try again later.', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
   
         DB::commit();
@@ -104,7 +104,7 @@ class PackageController extends Controller
 
             return $this->respondOk('Package updated.');
         } catch (Exception $e) {
-            return $this->errorResponse('Failed to update package', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->failedResponse('Failed to update package', HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

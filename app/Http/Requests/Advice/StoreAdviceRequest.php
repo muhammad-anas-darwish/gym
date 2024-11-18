@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Advice;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAdviceRequest extends FormRequest
 {
@@ -23,7 +25,7 @@ class StoreAdviceRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:128'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => ['required', Rule::exists(Category::class, 'id')],
         ];
     }
 }

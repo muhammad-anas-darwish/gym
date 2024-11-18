@@ -28,7 +28,7 @@ class CouponController extends Controller
 
         $coupons = $this->couponService->getCouponsWithPagination($perPage);
 
-        return $this->paginatedResponse($coupons, CouponResource::class);
+        return $this->successResponse(CouponResource::collection($coupons));
     }
 
     /**
@@ -50,7 +50,7 @@ class CouponController extends Controller
      */
     public function show(Coupon $coupon): JsonResponse
     {
-        return $this->successResponse(new CouponResource($coupon), 'Coupon retrieved successfully');
+        return $this->successResponse(new CouponResource($coupon), message: 'Coupon retrieved successfully');
     }
 
     /**
@@ -60,6 +60,6 @@ class CouponController extends Controller
     {
         $this->couponProcessor->deleteCoupon($coupon);
 
-        return $this->successResponse([], 'Coupon deleted successfully.', 204);
+        return $this->successResponse([], 204, 'Coupon deleted successfully.');
     }
 }

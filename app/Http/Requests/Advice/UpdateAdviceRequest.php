@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Advice;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAdviceRequest extends FormRequest
 {
@@ -23,7 +25,7 @@ class UpdateAdviceRequest extends FormRequest
     {
         return [
             'title' => ['filled', 'string', 'max:128'],
-            'category_id' => ['sometimes', 'exists:categories,id'],
+            'category_id' => ['sometimes', Rule::exists(Category::class, 'id')],
         ];
     }
 }

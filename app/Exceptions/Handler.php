@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof CustomException) {
-            return $this->errorResponse($exception->getMessage(), $exception->getCode());
+            return $this->failedResponse($exception->getMessage(), $exception->getCode());
         }
 
         return parent::render($request, $exception);

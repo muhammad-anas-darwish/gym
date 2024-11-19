@@ -29,6 +29,8 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+            $this->map();
+
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
@@ -36,5 +38,27 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+    }
+
+    protected function map()
+    {
+        $this->mapRoleRoutes('admin');
+        $this->mapRoleRoutes('coach');
+        $this->mapRoleRoutes('trainee');
+    }
+
+    protected function mapRoleRoutes(string $role)
+    {
+        $modules = [
+            'admin' => [],
+            'coach' => [],
+            'trainee' => [],
+        ];
+
+        foreach ($modules[$role] as $module) {
+            Route::middleware(['api']) // "role:$role"
+                ->prefix("api/{$role}")
+                ->group(base_path("routes/{$role}/{$module}.php"));
+        }
     }
 }

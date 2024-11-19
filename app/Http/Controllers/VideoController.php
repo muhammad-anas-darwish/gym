@@ -55,8 +55,7 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        $video['views'] += 1;
-        $video->save();
+        $video->increment('views');
 
         return response()->json($video->load(['user:id,name']));
     }

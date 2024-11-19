@@ -2,36 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\Filter;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\ArticleResource;
+use App\Services\Articles\ArticleService;
 
 class ArticleController extends Controller
 {
+    public function __construct(private ArticleService $articleService)
+    {
+        // 
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $articles = Article::query();
+        $articles = $this->articleService->getArticles();
 
-        $filter = new Filter($articles);
-        $filter->search([
-            'title' => $request->query('q'),
-            'description' => $request->query(('q')),
-            ])
-            ->where('category_id', $request->query('category_id'))
-            ->where('user_id', $request->query('user_id'))
-            ->orderBy(['created_at', 'views_count'], $request->query('sort_by'), 'desc');
-
-        $articles = $articles->with(['user:id,name', 'category'])
-            ->select('id', 'title', 'article_photo_path', 'views_count', 'user_id', 'category_id')
-            ->paginate(10);
-
-        return response()->json($articles);
+        return $this->successResponse(ArticleResource::collection($articles));
     }
 
     /**
@@ -40,13 +31,10 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = Auth::id();
-        if ($request->hasFile('article_photo'))
-            $data['article_photo_path'] = $request->file('article_photo')->store('/images/articles', ['disk' => 'public']);
 
-        Article::create($data);
-
-        return response()->json(['message' => 'Article added.'], 201);
+        $article = $this->articleService->store($request, $data);
+        
+        return $this->successResponse(new ArticleResource($article), 201, 'Article added.');
     }
 
     /**
@@ -54,12 +42,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $article['views_count'] += 1;
-        $article->save();
+        $this->articleService->getArticle($article);
 
-        $article = $article->load(['user:id,name', 'category']);
-
-        return response()->json($article);
+        return $this->successResponse(new ArticleResource($article));
     }
 
     /**
@@ -68,13 +53,10 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $data = $request->validated();
-        $data['user_id'] = Auth::id();
-        if ($request->hasFile('article_photo'))
-            $data['article_photo_path'] = $request->file('article_photo')->store('/images/articles', ['disk' => 'public']);
 
-        $article->update($data);
+        $this->articleService->update($article, $request, $data);
 
-        return response()->json(['message' => 'Article updated.']);
+        return $this->successResponse(new ArticleResource($article), 200, 'Article updated.');
     }
 
     /**
@@ -82,8 +64,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        $article->delete();
-
-        return response()->json(['message' => 'Records deleted.'], 204);
+        $this->articleService->destroy($article);
+        return $this->successResponse(code: 204, message:'Records deleted.');
     }
 }

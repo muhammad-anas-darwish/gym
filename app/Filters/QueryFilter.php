@@ -95,4 +95,22 @@ class QueryFilter
         });
         return $this;
     }
+
+    public function sort($columns, $direction = 'asc', array $allowedColumns = [])
+    {
+        if (!is_null($columns)) {
+            if (is_array($columns)) {
+                foreach ($columns as $column) {
+                    if (in_array($column, $allowedColumns)) { 
+                        $this->builder->orderBy($column, $direction);
+                    }
+                }
+            } else {
+                if (in_array($columns, $allowedColumns)) { 
+                    $this->builder->orderBy($columns, $direction);
+                }            
+            }
+        }
+        return $this;
+    }
 }

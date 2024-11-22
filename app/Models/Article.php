@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Filters\QueryFilter;
+use App\Traits\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
 
-class Article extends Model
+class Article extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'user_id',
@@ -44,7 +46,25 @@ class Article extends Model
                 ->where('category_id', request()->category_id)
                 ->where('user_id', request()->user_id)
                 ->sort(request()->query('sort_by'), 'desc', ['created_at', 'views_count']);
-        });
-        
+        });   
     }
+
+    public array $fileRules = [
+        'thumb' => [
+            'type' => 'single', 
+            'sizes' => [
+                'small' => [100, 100],
+                'medium' => [300, 300],
+                'large' => [600, 600],
+            ],
+        ],
+        'gallery' => [
+            'type' => 'multiple',
+            'sizes' => [
+                'small' => [200, 200],
+                'medium' => [400, 400],
+                'large' => [800, 800],
+            ],
+        ],
+    ];
 }

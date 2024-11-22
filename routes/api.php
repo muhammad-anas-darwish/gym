@@ -19,6 +19,7 @@ use App\Http\Controllers\MuscleExerciseController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SpecialtyController;
+use App\Http\Controllers\TemporaryUploadController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserController;
@@ -105,3 +106,5 @@ Route::post('/groups/leave', [GroupController::class, 'leaveGroup'])->name('grou
 Route::patch('/groups/change-user-chat-role', [GroupController::class, 'changeUserChatRole'])->name('groups.changeUserChatRole');
 Route::delete('/groups/remove-user', [GroupController::class, 'removeUser'])->name('groups.removeUser');
 Route::apiResource('groups', GroupController::class)->only(['update']);
+
+Route::post('temporary-upload', [TemporaryUploadController::class, 'store']);

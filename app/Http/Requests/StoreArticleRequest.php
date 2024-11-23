@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TemporaryUpload;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreArticleRequest extends FormRequest
 {
@@ -25,7 +27,7 @@ class StoreArticleRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:64'],
             'description' => ['required', 'string', 'max:10000'],
-            'article_photo' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'thumbnail' => ['nullable', Rule::exists(TemporaryUpload::class, 'token')],
         ];
     }
 }

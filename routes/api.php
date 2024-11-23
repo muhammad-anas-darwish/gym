@@ -108,3 +108,20 @@ Route::delete('/groups/remove-user', [GroupController::class, 'removeUser'])->na
 Route::apiResource('groups', GroupController::class)->only(['update']);
 
 Route::post('temporary-upload', [TemporaryUploadController::class, 'store']);
+
+Route::get('test', function () {
+    $article = App\Models\Article::find(8);
+
+    App\Services\Images\FileProcessor::storeFile($article, 'thumb', '674202586e177');
+    // App\Services\Images\FileProcessor::storeFile($article, 'gallery', '6740eadfc8a47');
+    // App\Services\Images\FileProcessor::storeFiles($article, 'gallery', ['6740edc09ecc1']);
+    // App\Services\Images\FileProcessor::storeImage($article, 'thumb', '6740df59c3c78');
+    // App\Services\Images\FileProcessor::storeImage($article, 'thumb', '6740df63bb58b');
+    // App\Services\Images\FileProcessor::storeImage($article, 'gallery', '6740dfad2f14d');
+    // App\Services\Images\FileProcessor::storeImage($article, 'gallery', '6740dfb6257f1');
+    App\Services\Images\FileProcessor::deleteFile($article, 'thumb');
+    return [
+        App\Services\Images\FileProcessor::getPhotosByQuality($article, 'thumb', 'large'),
+        App\Services\Images\FileProcessor::getPhotosByQuality($article, 'gallery'),
+    ];
+});

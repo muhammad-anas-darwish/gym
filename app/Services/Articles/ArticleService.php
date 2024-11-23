@@ -3,29 +3,28 @@
 namespace App\Services\Articles;
 
 use App\Models\Article;
+use App\Services\Images\FileProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleService
 {
-    public function getArticles()
+    public function getAll()
     {
         return Article::filter()
             ->select(['id', 'title', 'views_count', 'article_photo_path', 'user_id', 'category_id', 'created_at', 'updated_at']) 
-            ->with(['user', 'category'])    
+            ->with(['user', 'category'])
             ->paginate(18);
     }
 
-    public function store(Request $request, array $data)
+    public function store(array $data)
     {
-        $data['user_id'] = Auth::id();
-
-        if ($request->hasFile('article_photo'))
-            $data['article_photo_path'] = $request->file('article_photo')->store('/images/articles', ['disk' => 'public']);
-
         $article = Article::create($data);
+        if (isset($data['thumbnail']) && $data['thumbnail']) {
+            FileProcessor::storeFile($article, 'thumbnail', $data['thumbnail']);
+        }
 
-        $article->load(['user', 'category']);
+        $article->load(['user', 'category', 'media']);
         return $article;
     }
 
@@ -37,8 +36,6 @@ class ArticleService
 
     public function update(Article $article, $request, $data)
     {
-        $data['user_id'] = Auth::id();
-
         if ($request->hasFile('article_photo'))
             $data['article_photo_path'] = $request->file('article_photo')->store('/images/articles', ['disk' => 'public']);
 

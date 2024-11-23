@@ -14,11 +14,27 @@
     @endif
 </form>
 <hr>
-<form action="/api/chats/15" method="post" enctype="multipart/form-data">
+{{-- <form action="/api/chats/15" method="post" enctype="multipart/form-data">
     @csrf
     @method('patch')
 
     <input name="group_image" type="file">
+    <input type="submit">
+
+    @if($errors->has('group_image'))
+        <div class="error">{{ $errors->first('group_image') }}</div>
+    @endif
+</form> --}}
+
+<form action="{{route('articles.store')}}" method="post">
+    @csrf
+    {{-- @method('patch') --}}
+    <input name="title" value="Article 1">
+    <input name="description" value="Article 1">
+    <input name="thumbnail" value="674206e726415">
+    <input name="category_id" value="1">
+
+    {{-- <input name="group_image" type="file"> --}}
     <input type="submit">
 
     @if($errors->has('group_image'))

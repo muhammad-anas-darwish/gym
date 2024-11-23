@@ -20,7 +20,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = $this->articleService->getArticles();
+        $articles = $this->articleService->getAll();
 
         return $this->successResponse(ArticleResource::collection($articles));
     }
@@ -32,7 +32,7 @@ class ArticleController extends Controller
     {
         $data = $request->validated();
 
-        $article = $this->articleService->store($request, $data);
+        $article = $this->articleService->store($data);
         
         return $this->successResponse(new ArticleResource($article), 201, 'Article added.');
     }

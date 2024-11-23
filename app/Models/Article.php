@@ -7,6 +7,7 @@ use App\Traits\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
 class Article extends Model implements HasMedia
@@ -35,6 +36,15 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(User::class)->select(['id', 'name']);
     }
 
+    public static function boot() 
+    {
+        parent::boot();
+
+        static::creating(function (Article $article) {
+            $article->user_id = Auth::id();
+        });
+    }
+
     public function scopeFilter($query)
     {
         return (new QueryFilter)->apply($query, function ($filter) {
@@ -50,7 +60,7 @@ class Article extends Model implements HasMedia
     }
 
     public array $fileRules = [
-        'thumb' => [
+        'thumbnail' => [
             'type' => 'single', 
             'sizes' => [
                 'small' => [100, 100],

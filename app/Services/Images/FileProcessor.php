@@ -2,6 +2,7 @@
 
 namespace App\Services\Images;
 
+use App\Exceptions\CustomException;
 use App\Jobs\ProcessMediaFile;
 use App\Models\TemporaryUpload;
 use Illuminate\Database\Eloquent\Model;
@@ -32,11 +33,10 @@ class FileProcessor
         $fieldRules = $model->fileRules[$field] ?? null;
 
         if (!$fieldRules) {
-            throw new \Exception("Field rules not defined for field: {$field}");
+            throw new CustomException("Field rules not defined for field: {$field}", 500);
         }
 
         $cacheKey = "media_urls_{$model->id}_{$field}_{$quality}";
-        info($cacheKey);
         $cachedUrls = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($model, $field, $quality, $fieldRules) {
             if ($fieldRules['type'] === 'single') {
                 return $quality
@@ -50,26 +50,25 @@ class FileProcessor
         });
         
         return $cachedUrls;
-
-        // if ($fieldRules['type'] === 'single') { // single media
-        //     return $quality
-        //         ? $model->getFirstMediaUrl($field, $quality)
-        //         : $model->getFirstMediaUrl($field);
-        // }
-
-        // // multiple media
-        // return $model->getMedia($field)->map(function ($item) use ($quality) {
-        //     return $quality ? $item->getUrl($quality) : $item->getUrl();
-        // })->toArray();
     }
 
+    public static function deleteFile(Model $model, string $field)
+    {
+        $fieldRules = $model->fileRules[$field] ?? null;
+
+        if (!$fieldRules) {
+            throw new CustomException("Field rules not defined for field: {$field}", 500);
+        }
+
+        $model->clearMediaCollection($field);
+    }
 
     protected static function processFile(Model $model, $field, $media)
     {
         $fieldRules = $model->fileRules[$field] ?? null;
 
         if (!$fieldRules) {
-            throw new \Exception("Field rules not defined for field: {$field}");
+            throw new CustomException("Field rules not defined for field: {$field}", 500);
         }
 
         if ($fieldRules['type'] === 'single') {
@@ -104,13 +103,13 @@ class FileProcessor
         $temporaryUploads = TemporaryUpload::whereIn('token', $tokens)->get();
 
         if ($temporaryUploads->isEmpty()) {
-            throw new \Exception("No media found for the provided tokens.");
+            throw new CustomException('No media found for the provided tokens.', 422);
         }
 
         $media = $temporaryUploads->flatMap(fn($upload) => $upload->getMedia());
 
         if ($media->isEmpty()) {
-            throw new \Exception("No media files found for the provided tokens.");
+            throw new CustomException('No media found for the provided tokens.', 422);
         }
 
         return [
